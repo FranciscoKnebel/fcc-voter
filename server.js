@@ -13,9 +13,12 @@ app = express();
 
 mongoose.connect(process.env.MLAB_URL);
 
+require('./server/auth/passport')(passport); // pass passport for configuration
+
 app.use(morgan('dev'));
 app.use(cookieParser());
-app.use(bodyParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extend: true}));
 app.set("view options", {layout: false});
 app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname + "/client/views");
@@ -26,6 +29,8 @@ app.use(session({secret: process.env.SESSION_SECRET}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
+require('./server/auth/passport')(passport); // pass passport for configuration
 
 app.use('/css', express.static(__dirname + '/client/css'));
 app.use('/js', express.static(__dirname + '/client/js'));
