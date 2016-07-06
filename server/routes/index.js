@@ -1,11 +1,13 @@
-module.exports = function (app, passport) {
+module.exports = function(app, passport) {
 
-	app.get('/', function (req, res) {
+	app.get('/', function(req, res) {
 		res.render('index.ejs');
 	});
 
-	app.get('/login', function (req, res) {
-		res.render('login.ejs', {message: req.flash('loginMessage')});
+	app.get('/login', function(req, res) {
+		res.render('login.ejs', {
+			message: req.flash('loginMessage')
+		});
 	});
 
 	app.post('/login', passport.authenticate('local-login', {
@@ -14,8 +16,10 @@ module.exports = function (app, passport) {
 		failureFlash: true
 	}));
 
-	app.get('/signup', function (req, res) {
-		res.render('signup.ejs', {message: req.flash('signupMessage')});
+	app.get('/signup', function(req, res) {
+		res.render('signup.ejs', {
+			message: req.flash('signupMessage')
+		});
 	});
 
 	app.post('/signup', passport.authenticate('local-signup', {
@@ -24,21 +28,37 @@ module.exports = function (app, passport) {
 		failureFlash: true
 	}));
 
-	app.get('/profile', isLoggedIn, function (req, res) {
-		res.render('profile.ejs', {user: req.user}); // get the user out of session and pass to template
+	app.get('/profile', isLoggedIn, function(req, res) {
+		res.render('profile.ejs', {
+			user: req.user
+		}); // get the user out of session and pass to template
 	});
 
-	app.get('/logout', function (req, res) {
+	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
 
-	app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
+	app.get('/auth', function(req, res) {
+		res.redirect('/login');
+	});
+
+	app.get('/auth/facebook', passport.authenticate('facebook', {
+		scope: 'email'
+	}));
 
 	app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 		successRedirect: '/profile',
 		failureRedirect: '/'
 	}));
+
+	app.get('/auth/twitter', passport.authenticate('twitter'));
+
+	app.get('/auth/twitter/callback',
+		passport.authenticate('twitter', {
+			successRedirect: '/profile',
+			failureRedirect: '/'
+		}));
 
 };
 
@@ -48,4 +68,4 @@ function isLoggedIn(req, res, next) {
 		return next();
 	else
 		res.redirect('/');
-	}
+}
