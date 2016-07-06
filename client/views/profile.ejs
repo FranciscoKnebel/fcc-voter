@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
     <head>
         <title>Node Authentication</title>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
@@ -9,8 +10,10 @@
                 padding-top: 80px;
                 word-wrap: break-word;
             }
+
         </style>
     </head>
+
     <body>
         <div class="container">
 
@@ -32,11 +35,37 @@
 
                         <p>
                             <strong>id</strong>:
-                            <%= user._id %><br>
+                            <%= user._id %>
+                            <br>
                             <strong>email</strong>:
-                            <%= user.local.email %><br>
+                            <%= user.local.email %>
+                            <br>
                             <strong>password</strong>:
                             <%= user.local.password %>
+                        </p>
+
+                    </div>
+                </div>
+
+                <!-- FACEBOOK INFORMATION -->
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3 class="text-primary">
+                            <span class="fa fa-facebook"></span>
+                            Facebook</h3>
+
+                        <p>
+                            <strong>id</strong>:
+                            <%= user.facebook.id %>
+                            <br>
+                            <strong>token</strong>:
+                            <%= user.facebook.token %>
+                            <br>
+                            <strong>email</strong>:
+                            <%= user.facebook.email %>
+                            <br>
+                            <strong>name</strong>:
+                            <%= user.facebook.name %>
                         </p>
 
                     </div>
@@ -46,4 +75,5 @@
 
         </div>
     </body>
+
 </html>
