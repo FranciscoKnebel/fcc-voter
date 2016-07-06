@@ -18,14 +18,20 @@ require('./server/auth/passport')(passport); // pass passport for configuration
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extend: true}));
-app.set("view options", {layout: false});
+app.use(bodyParser.urlencoded({
+	extend: true
+}));
+app.set("view options", {
+	layout: false
+});
 app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname + "/client/views");
 app.set('view engine', 'ejs');
 
 // passport
-app.use(session({secret: process.env.SESSION_SECRET}));
+app.use(session({
+	secret: process.env.SESSION_SECRET
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -37,7 +43,7 @@ app.use('/js', express.static(__dirname + '/client/js'));
 
 routes(app, passport);
 
-var port = process.env.PORT || 8080;
-var listener = app.listen(port, function () {
+var port = process.env.PORT;
+var listener = app.listen(port, function() {
 	console.log("Listening on port " + listener.address().port);
 });
