@@ -54,16 +54,21 @@ module.exports = function(app, passport) {
 
 	app.get('/auth/twitter', passport.authenticate('twitter'));
 
-	app.get('/auth/twitter/callback',
-		passport.authenticate('twitter', {
-			successRedirect: '/profile',
-			failureRedirect: '/'
-		}));
+	app.get('/auth/twitter/callback', passport.authenticate('twitter', {
+		successRedirect: '/profile',
+		failureRedirect: '/'
+	}));
+
+	app.get('/auth/steam', passport.authenticate('steam'));
+
+	app.get('/auth/steam/callback', passport.authenticate('steam', {
+		successRedirect: '/profile',
+		failureRedirect: '/'
+	}))
 
 };
 
 function isLoggedIn(req, res, next) {
-
 	if (req.isAuthenticated())
 		return next();
 	else

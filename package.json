@@ -4,7 +4,7 @@
   "description": "Voting full-stack application for FreeCodeCamp",
   "main": "server.js",
   "scripts": {
-    "start" : "node server.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -37,6 +37,7 @@
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
+    "passport-steam": "^1.0.4",
     "passport-twitter": "^1.0.4"
   }
 }

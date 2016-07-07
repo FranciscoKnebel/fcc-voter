@@ -3,19 +3,19 @@ module.exports = {
 	'facebookAuth': {
 		'clientID': process.env.FACEBOOK_CLIENT_ID,
 		'clientSecret': process.env.FACEBOOK_CLIENT_SECRET,
-		'callbackURL': 'http://localhost:8080/auth/facebook/callback'
+		'callbackURL': process.env.FACEBOOK_CALLBACK
 	},
 
 	'twitterAuth': {
 		'consumerKey': process.env.TWITTER_CONSUMER_KEY,
 		'consumerSecret': process.env.TWITTER_CONSUMER_SECRET,
-		'callbackURL': 'http://localhost:8080/auth/twitter/callback'
+		'callbackURL': process.env.TWITTER_CALLBACK
 	},
 
-	'googleAuth': {
-		'clientID': 'your-secret-clientID-here',
-		'clientSecret': 'your-client-secret-here',
-		'callbackURL': 'http://localhost:8080/auth/google/callback'
+	'steamAuth': {
+		'apiKey': process.env.STEAM_API_KEY,
+		'realmURL': 'http://localhost:8080',
+		'callbackURL': 'http://localhost:8080/auth/steam/callback'
 	}
 
 };
