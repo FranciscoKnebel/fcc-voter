@@ -51,9 +51,8 @@ module.exports = function(passport) {
 						if (err)
 							throw err;
 						return done(null, user);
-					} //  We're not logged in, so we're creating a brand new user.
-					);
-				} else {
+					});
+				} else { //  We're not logged in, so we're creating a brand new user.
 					// create the user
 					var newUser = new User();
 
