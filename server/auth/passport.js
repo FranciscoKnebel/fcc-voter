@@ -21,43 +21,52 @@ module.exports = function(passport) {
 		// by default, local strategy uses username and password, we will override with email
 		usernameField: 'email',
 		passwordField: 'password',
-		passReqToCallback: true // allows us to pass back the entire request to the callback
+		passReqToCallback: true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
 	}, function(req, email, password, done) {
-		// User.findOne wont fire unless data is sent back
+
+		// asynchronous
 		process.nextTick(function() {
 
-			// find a user whose email is the same as the forms email
-			// we are checking to see if the user trying to login already exists
+			//  Whether we're signing up or connecting an account, we'll need
+			//  to know if the email address is in use.
 			User.findOne({
 				'local.email': email
-			}, function(err, user) {
+			}, function(err, existingUser) {
+
 				// if there are any errors, return the error
 				if (err)
 					return done(err);
 
-				// check to see if theres already a user with that email
-				if (user) {
+				// check to see if there's already a user with that email
+				if (existingUser)
 					return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-				} else {
 
-					// if there is no user with that email
+				//  If we're logged in, we're connecting a new local account.
+				if (req.user) {
+					var user = req.user;
+					user.local.email = email;
+					user.local.password = user.generateHash(password);
+					user.save(function(err) {
+						if (err)
+							throw err;
+						return done(null, user);
+					});
+				} else { //  We're not logged in, so we're creating a brand new user.
 					// create the user
 					var newUser = new User();
-					profile
-					// set the user's local credentials
+
 					newUser.local.email = email;
 					newUser.local.password = newUser.generateHash(password);
 
-					// save the user
 					newUser.save(function(err) {
 						if (err)
 							throw err;
+
 						return done(null, newUser);
 					});
 				}
 
 			});
-
 		});
 
 	}));
@@ -86,50 +95,68 @@ module.exports = function(passport) {
 
 	//Facebook
 	passport.use(new FacebookStrategy({
-		clientID: configAuth.facebookAuth.clientID,
-		clientSecret: configAuth.facebookAuth.clientSecret,
-		callbackURL: configAuth.facebookAuth.callbackURL,
+		clientID: configAuth.facebookAuth.clientID, clientSecret: configAuth.facebookAuth.clientSecret, callbackURL: configAuth.facebookAuth.callbackURL, passReqToCallback: true, // allows us to pass in the req from our route (lets us check if a user is logged in or not)
 		profileFields: ["emails", "displayName", "name"]
-	}, function(token, refreshToken, profile, done) {
+	}, function(req, token, refreshToken, profile, done) {
 		process.nextTick(function() {
-			User.findOne({
-				'facebook.id': profile.id
-			}, function(err, user) {
+			if (!req.user) {
 
-				if (err)
-					return done(err);
+				User.findOne({
+					'facebook.id': profile.id
+				}, function(err, user) {
 
-				// if the user is found, then log them in
-				if (user) {
-					return done(null, user); // user found, return that user
-				} else {
-					var newUser = new User();
+					if (err)
+						return done(err);
 
-					newUser.facebook.id = profile.id;
-					newUser.facebook.token = token; // we will save the token that facebook provides to the user
-					newUser.facebook.name = profile.displayName;
-					newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+					// if the user is found, then log them in
+					if (user) {
+						return done(null, user); // user found, return that user
+					} else {
+						var newUser = new User();
 
-					newUser.save(function(err) {
-						if (err)
-							throw err;
+						newUser.facebook.id = profile.id;
+						newUser.facebook.token = token; // we will save the token that facebook provides to the user
+						newUser.facebook.name = profile.displayName;
+						newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 
-						return done(null, newUser);
-					});
-				}
-			});
+						newUser.save(function(err) {
+							if (err)
+								throw err;
+
+							return done(null, newUser);
+						});
+					}
+				});
+			} else {
+				// user already exists and is logged in, we have to link accounts
+				var user = req.user; // pull the user out of the session
+
+				// update the current users facebook credentials
+				user.facebook.id = profile.id;
+				user.facebook.token = token;
+				user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
+				user.facebook.email = profile.emails[0].value;
+
+				// save the user
+				user.save(function(err) {
+					if (err)
+						throw err;
+					return done(null, user);
+				});
+			}
 		});
 	}));
 
-
 	//TWITTER
 	passport.use(new TwitterStrategy({
-			consumerKey: configAuth.twitterAuth.consumerKey,
-			consumerSecret: configAuth.twitterAuth.consumerSecret,
-			callbackURL: configAuth.twitterAuth.callbackURL
-		},
-		function(token, tokenSecret, profile, done) {
-			process.nextTick(function() {
+		consumerKey: configAuth.twitterAuth.consumerKey,
+		consumerSecret: configAuth.twitterAuth.consumerSecret,
+		callbackURL: configAuth.twitterAuth.callbackURL,
+		passReqToCallback: true
+	}, function(req, token, tokenSecret, profile, done) {
+		process.nextTick(function() {
+
+			if (!req.user) {
 
 				User.findOne({
 					'twitter.id': profile.id
@@ -161,56 +188,22 @@ module.exports = function(passport) {
 						});
 					}
 				});
+			} else {
+				var user = req.user;
 
-			});
+				user.twitter.id = profile.id;
+				user.twitter.token = token;
+				user.twitter.username = profile.username;
+				user.twitter.displayName = profile.displayName;
 
-		}));
+				// save the user
+				user.save(function(err) {
+					if (err)
+						throw err;
+					return done(null, user);
+				});
+			}
+		});
 
+	}));
 };
-
-/*    app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-
-    // Configure Passport authenticated session persistence.
-    //
-    // In order to restore authentication state across HTTP requests, Passport needs
-    // to serialize users into and deserialize users out of the session.  In a
-    // production-quality application, this would typically be as simple as
-    // supplying the user ID when serializing, and querying the user record by ID
-    // from the database when deserializing.  However, due to the fact that this
-    // example does not have a database, the complete Twitter profile is serialized
-    // and deserialized.
-    passport.serializeUser(function(user, cb) {
-      cb(null, user);
-    });
-
-    passport.deserializeUser(function(obj, cb) {
-      cb(null, obj);
-    });
-
-    passport.use(new TwitterStrategy({
-      consumerKey: process.env.TWITTER_CONSUMER_KEY,
-      consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-      callbackURL: "http://127.0.0.1/auth/twitter/callback"
-    },
-    function(token, tokenSecret, profile, cb) {
-      console.log(profile);
-      return cb(null, profile);
-    }));
-    /*User.findOrCreate({ twitterId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  }
-    app.get('/auth', function(req, res) {
-      res.render('index.html'); //Show login screen
-    });
-
-    app.get("/auth/twitter", passport.authenticate('twitter'));
-
-    app.get("/auth/twitter/callback", passport.authenticate('twitter', { failureRedirect: '/auth' }),
-      function(req, res) {
-        res.redirect('/');
-    });
-*/

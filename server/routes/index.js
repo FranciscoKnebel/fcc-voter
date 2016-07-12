@@ -1,37 +1,17 @@
+var polls = require('./polls');
+
+var localAuth = require('./auth/local');
+var facebookAuth = require('./auth/facebook');
+var twitterAuth = require('./auth/twitter');
+
 module.exports = function(app, passport) {
 
 	app.get('/', function(req, res) {
 		res.render('index.ejs');
 	});
 
-	app.get('/login', function(req, res) {
-		res.render('login.ejs', {
-			message: req.flash('loginMessage')
-		});
-	});
-
-	app.post('/login', passport.authenticate('local-login', {
-		successRedirect: '/profile',
-		failureRedirect: '/login',
-		failureFlash: true
-	}));
-
-	app.get('/signup', function(req, res) {
-		res.render('signup.ejs', {
-			message: req.flash('signupMessage')
-		});
-	});
-
-	app.post('/signup', passport.authenticate('local-signup', {
-		successRedirect: '/profile',
-		failureRedirect: '/signup',
-		failureFlash: true
-	}));
-
 	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('profile.ejs', {
-			user: req.user
-		}); // get the user out of session and pass to template
+		res.render('profile.ejs', {user: req.user}); // get the user out of session and pass to template
 	});
 
 	app.get('/logout', function(req, res) {
@@ -39,33 +19,29 @@ module.exports = function(app, passport) {
 		res.redirect('/');
 	});
 
-	app.get('/auth', function(req, res) {
-		res.redirect('/login');
-	});
+	localAuth(app, passport);
+	facebookAuth(app, passport);
+	twitterAuth(app, passport);
 
-	app.get('/auth/facebook', passport.authenticate('facebook', {
-		scope: 'email'
-	}));
-
-	app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-		successRedirect: '/profile',
-		failureRedirect: '/'
-	}));
-
-	app.get('/auth/twitter', passport.authenticate('twitter'));
-
-	app.get('/auth/twitter/callback',
-		passport.authenticate('twitter', {
-			successRedirect: '/profile',
-			failureRedirect: '/'
-		}));
-
+	polls(app);
 };
 
 function isLoggedIn(req, res, next) {
-
 	if (req.isAuthenticated())
 		return next();
 	else
 		res.redirect('/');
+	}
+
+function getUserIP(req) {
+	var ip;
+
+	if (req.headers['x-forwarded-for'])
+		ip = req.headers['x-forwarded-for'].split(",")[0];
+	else if (req.connection && req.connection.remoteAddress)
+		ip = req.connection.remoteAddress;
+	else
+		ip = req.ip;
+
+	return ip;
 }
