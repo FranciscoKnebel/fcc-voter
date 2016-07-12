@@ -28,16 +28,26 @@ module.exports = function(app) {
 		res.send("New question from " + newPoll.user._id);
 	});
 
-	app.get('/poll/:pollID', function(req, res) {
+	app.get('/poll/:ID', function(req, res) {
 		//check db for polls with _id equal to req.params.pollID
-		Poll.findOne({'_id': req.params.pollID}, function(err, result) {
+		var ID = req.params.ID;
+
+		Poll.findOne({'_id': ID}, function(err, result) {
 			if(err)
 				throw err;
 
-			if(!result)
-				res.render('poll.ejs', {pollID: req.params.pollID});
-			res.render('poll.ejs', {poll: result, pollID: req.params.pollID});
+
+			if(!result) {
+				res.render('poll.ejs', {found: false, ID: ID});
+			}
+			else {
+				res.render('poll.ejs', {found: true, poll: result, ID: ID});
+			}
 		});
+	});
+
+	app.get('/poll/', function(req, res){
+		res.redirect('/');
 	});
 }
 

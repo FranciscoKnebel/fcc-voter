@@ -14,10 +14,10 @@
     </head>
     <body>
         <div class="container well">
-          <% if (poll) { %>
+          <% if (found) { %>
             <div class="page-header text-center">
                 <h1><%= poll.title %></h1>
-                <h5>http://www.votação.com/poll/<%= pollID %></h5>
+                <h5>http://www.votação.com/poll/<%= ID %></h5>
             </div>
 
             <div class="table-responsive">
@@ -38,7 +38,7 @@
           <% } else { %>
             <div class="page-header text-center">
                 <h1>Poll not found!</h1>
-                <h5>http://www.votação.com/poll/<%= pollID %></h5>
+                <h5>http://www.votação.com/poll/<%= ID %></h5>
             </div>
               Poll not found.
           <% } %>

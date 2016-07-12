@@ -24,6 +24,10 @@ module.exports = function(app, passport) {
 	twitterAuth(app, passport);
 
 	polls(app);
+
+	app.get('*', function(req, res) {
+		res.redirect('/');
+	});
 };
 
 function isLoggedIn(req, res, next) {
