@@ -23,7 +23,7 @@ app.controller('pollController', function ($scope, $http, $location) {
       renumberOptions();
 
       $http.post('/poll/new', $scope.newPoll).then(function(response) {
-          $location.url('/profile');
+          window.location.href = '/profile';
         },
         function(response) {
           console.log("Creating poll failed. Try again later.");

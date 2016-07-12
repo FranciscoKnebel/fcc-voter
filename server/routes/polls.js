@@ -1,4 +1,5 @@
 var Poll = require('../models/poll');
+var User = require('../models/user');
 
 module.exports = function(app) {
 
@@ -23,7 +24,10 @@ module.exports = function(app) {
 		newPoll.save(function(err) {
 			if(err)
 				throw err;
+			console.log("Saved poll " + newPoll.link + " to db");
+			savePollToUser(req, newPoll);
 		});
+
 
 		res.status("200").send("New question : " + newPoll.title);
 	});
@@ -32,7 +36,7 @@ module.exports = function(app) {
 		//check db for polls with _id equal to req.params.pollID
 		var ID = req.params.ID;
 
-		Poll.findOne({'_id': ID}, function(err, result) {
+		Poll.findOne({'link': ID}, function(err, result) {
 			if(err)
 				throw err;
 
@@ -49,6 +53,25 @@ module.exports = function(app) {
 	app.get('/poll/', function(req, res){
 		res.redirect('/');
 	});
+}
+
+function savePollToUser(req, poll) {
+	var owner = poll.owner;
+	var updatedPolls = [];
+	console.log("Saving poll to user " + owner.id);
+
+	if(owner.ownedPolls)
+		updatedPolls = owner.ownedPolls;
+
+	updatedPolls.push(poll);
+	User.findOneAndUpdate({'_id': owner.id}, {ownedPolls: updatedPolls}, function(err, user){
+		if(err)
+			throw err;
+
+		req.session.passport.user.ownedPolls = updatedPolls;
+	});
+
+	return;
 }
 
 function isLoggedIn(req, res, next) {

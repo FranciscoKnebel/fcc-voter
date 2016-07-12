@@ -16,7 +16,7 @@ var pollSchema = mongoose.Schema({
 		}
 	],
 	totalVotes: Number,
-	_id: {
+	link: {
 		type: String,
 		'default': shortid.generate
 	}
