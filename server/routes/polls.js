@@ -3,37 +3,41 @@ var Poll = require('../models/poll');
 module.exports = function(app) {
 
 	app.get('/poll/new', isLoggedIn, function(req, res) {
-		var newPoll = new Poll();
-
-		var options = [];
-		options.push({text: "Option 1", votes: 0});
-		options.push({text: "Option 2", votes: 1});
-
-		newPoll.title = "Poll Title";
-		newPoll.created = new Date();
-		newPoll.owner = req.user;
-		newPoll.options = options;
-		newPoll.totalVotes = 0 + 1;
-
-		newPoll.save(function(err) {
-			if (err)
-				throw err;
-			}
-		);
-
-		newPoll.voteFor(options[0]);
-
-		newPoll.save(function(err) {
-			if (err)
-				throw err;
-			res.contentType('application/json');
-			res.send(newPoll);
-		});
-
+		res.render("newPoll.ejs");
 	});
 
-	app.get('/poll/:pollID', isLoggedIn, function(req, res) {
-		res.send(req.params.pollID);
+	app.post('/poll/new', isLoggedIn, function(req, res) {
+		var newPoll = new Poll();
+
+		var pollOptions = [];
+		var passedOptions = req.body.options;
+		for (var i = 0; i < passedOptions.length; i++) {
+			pollOptions.push({text: passedOptions[i].text, votes: 0});
+		}
+
+		newPoll.title = req.body.question;
+		newPoll.owner = req.user;
+		newPoll.options = pollOptions;
+		newPoll.totalVotes = 0;
+
+		newPoll.save(function(err) {
+			if(err)
+				throw err;
+		});
+
+		res.send("New question from " + newPoll.user._id);
+	});
+
+	app.get('/poll/:pollID', function(req, res) {
+		//check db for polls with _id equal to req.params.pollID
+		Poll.findOne({'_id': req.params.pollID}, function(err, result) {
+			if(err)
+				throw err;
+
+			if(!result)
+				res.render('poll.ejs', {pollID: req.params.pollID});
+			res.render('poll.ejs', {poll: result, pollID: req.params.pollID});
+		});
 	});
 }
 

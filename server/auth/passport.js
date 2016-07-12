@@ -1,7 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require("passport-twitter").Strategy;
-var SteamStrategy = require("passport-steam").Strategy;
 
 var User = require('../models/user');
 var configAuth = require('./config');
@@ -207,37 +206,4 @@ module.exports = function(passport) {
 		});
 
 	}));
-
-	//STEAM
-	passport.use(new SteamStrategy({
-		returnURL: configAuth.steamAuth.callbackURL,
-		realm: configAuth.steamAuth.realmURL,
-		apiKey: configAuth.steamAuth.apiKey
-	}, function(identifier, profile, done) {
-		process.nextTick(function() {
-
-			User.findOne({
-				'steam.id': identifier
-			}, function(err, user) {
-
-				if (err)
-					return done(err);
-
-				if (user) {
-					return done(null, user);
-				} else {
-					var newUser = new User();
-
-					newUser.id = identifier; //do something with profile
-
-					newUser.save(function(err) {
-						if (err)
-							throw err;
-						return done(null, newUser);
-					})
-				}
-			});
-		});
-	}));
-
 };

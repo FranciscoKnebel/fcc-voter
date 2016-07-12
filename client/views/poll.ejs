@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Votação.com</title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+        <script src="https://use.fontawesome.com/dc7435dee3.js"></script>
+        <style>
+            body {
+                padding-top: 80px;
+                word-wrap: break-word;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="container well">
+          <% if (poll) { %>
+            <div class="page-header text-center">
+                <h1><%= poll.title %></h1>
+                <h5>http://www.votação.com/poll/<%= pollID %></h5>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Alternative</th>
+                        <th>Votes</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <% poll.options.forEach(function(option){ %>
+              <tr><td><h3><%= option.text%></h3></td><td><p><%= option.votes%></p></td></tr>
+            <% }); %>
+                </tbody>
+              </table>
+            </div>
+          <% } else { %>
+            <div class="page-header text-center">
+                <h1>Poll not found!</h1>
+                <h5>http://www.votação.com/poll/<%= pollID %></h5>
+            </div>
+              Poll not found.
+          <% } %>
+        </div>
+    </body>
+</html>

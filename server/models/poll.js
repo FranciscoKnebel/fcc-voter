@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var shortid = require('shortid');
 
 var pollSchema = mongoose.Schema({
 	title: String,
@@ -10,10 +11,20 @@ var pollSchema = mongoose.Schema({
 	options: [
 		{
 			text: String,
-			votes: Number
+			votes: Number,
+			_id: false
 		}
 	],
-	totalVotes: Number
+	totalVotes: Number,
+	_id: {
+		type: String,
+		'default': shortid.generate
+	}
+}, {
+	timestamps: {
+		createdAt: 'createdAt',
+		updatedAt: 'updatedAt'
+	}
 });
 
 pollSchema.methods.voteFor = function(option) {
@@ -28,9 +39,9 @@ pollSchema.methods.voteFor = function(option) {
 	}
 }
 
-pollSchema.set('toJSON', {virtuals: true});
-
-pollSchema.set('versionKey', false);
+pollSchema.methods.getOptions = function() {
+	return this.options;
+}
 
 module.exports = mongoose.model('Poll', pollSchema);
 
