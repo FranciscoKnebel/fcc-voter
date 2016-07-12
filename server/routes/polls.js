@@ -25,7 +25,7 @@ module.exports = function(app) {
 				throw err;
 		});
 
-		res.send("New question : " + newPoll.title);
+		res.status("200").send("New question : " + newPoll.title);
 	});
 
 	app.get('/poll/:ID', function(req, res) {

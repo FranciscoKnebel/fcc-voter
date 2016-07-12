@@ -4,7 +4,7 @@ const MIN_LENGTH = 5;
 
 var app = angular.module('poll', []);
 
-app.controller('pollController', function ($scope, $http) {
+app.controller('pollController', function ($scope, $http, $location) {
     $scope.newPoll = { options: [ { id: 0, text: ""} ]};
 
     $scope.createPoll = function() {
@@ -23,7 +23,7 @@ app.controller('pollController', function ($scope, $http) {
       renumberOptions();
 
       $http.post('/poll/new', $scope.newPoll).then(function(response) {
-          window.location.href = '/profile';
+          $location.url('/profile');
         },
         function(response) {
           console.log("Creating poll failed. Try again later.");
