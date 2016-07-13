@@ -6,61 +6,62 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<% include ../snippets/sharedCSS %>
 		<% include ../snippets/analytics %>
+		<link rel="stylesheet" href="/css/singleform.css">
 	</head>
 	<body>
-		<div class="ui center aligned container">
-			<h1>
-				<i class="sign in icon"></i>
-				Login</h1>
-			<!-- show any messages that come back with authentication -->
-			<% if (message.length > 0) { %>
-				<div class="ui warning message">
-					<%= message %>
-				</div>
-			<% } %>
-			<!-- LOGIN FORM -->
-			<div class="ui two column centered stackable grid">
-				<div class="column">
-					<form class="ui form" action="/login" method="post">
+		<div class="ui middle aligned center aligned grid">
+			<div class="column">
+				<h1 class="ui header">
+					<i class="sign in icon"></i>
+					Login</h1>
+
+				<!-- SIGNUP FORM -->
+				<form class="ui large form error" action="/login" method="post">
+					<div class="ui stacked segment">
 						<div class="required field">
 							<label>Email</label>
-							<input required type="email" name="email" placeholder="email">
+							<div class="ui left icon input">
+								<i class="user icon"></i>
+								<input required type="email" placeholder="E-mail address" name="email">
+							</div>
 						</div>
 						<div class="required field">
 							<label>Password</label>
-							<input required type="password" name="password" placeholder="password">
+							<div class="ui left icon input">
+								<i class="lock icon"></i>
+								<input required type="password" placeholder="Password" name="password">
+							</div>
 						</div>
-						<button type="submit" class="ui submit button">Login</button>
-					</form>
+						<button type="submit" class="ui teal submit button">Log In</button>
+					</div>
+					<% if (message.length > 0) { %>
+						<!-- show any messages that come back with authentication -->
+						<div class="ui error message">
+							<%= message %>
+						</div>
+					<% } %>
+				</form>
+
+				<div class="ui message">
+					<div class="ui buttons">
+						<a href="/signup" class="ui vertical animated teal button">
+							<div class="visible content">
+								Signup</div>
+							<div class="hidden content">
+								<i class="left arrow icon"></i>
+							</div>
+						</a>
+						<div class="or"></div>
+						<a href="/" class="ui vertical animated teal button">
+							<div class="visible content">
+								Home</div>
+							<div class="hidden content">
+								<i class="right arrow icon"></i>
+							</div>
+						</a>
+					</div>
 				</div>
 			</div>
-
-			<div class="ui horizontal divider" style="padding: 1em;">Need an account?</div>
-			<div class="ui buttons" style="margin: 1em;">
-				<a href="/signup" class="ui vertical animated button">
-					<div class="visible content">
-						Signup</div>
-					<div class="hidden content">
-						<i class="left arrow icon"></i>
-					</div>
-				</a>
-				<div class="or"></div>
-				<a href="/" class="ui vertical animated button">
-					<div class="visible content">
-						Home</div>
-					<div class="hidden content">
-						<i class="right arrow icon"></i>
-					</div>
-				</a>
-			</div>
-			<div class="ui horizontal divider"></div>
-			<div class="ui buttons">
-				<a href="/auth/facebook" class="ui facebook button">
-					<i class="facebook icon"></i>Facebook</a>
-				<a href="/auth/twitter" class="ui twitter button">
-					<i class="twitter icon"></i>Twitter</a>
-			</div>
 		</div>
-		<% include ../snippets/sharedJS %>
 	</body>
 </html>

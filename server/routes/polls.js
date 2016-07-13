@@ -13,7 +13,10 @@ module.exports = function(app) {
 		var pollOptions = [];
 		var passedOptions = req.body.options;
 		for (var i = 0; i < passedOptions.length; i++) {
-			pollOptions.push({text: passedOptions[i].text, votes: 0});
+			pollOptions.push({
+				text: passedOptions[i].text,
+				votes: 0
+			});
 		}
 
 		newPoll.title = req.body.question;
@@ -22,7 +25,7 @@ module.exports = function(app) {
 		newPoll.totalVotes = 0;
 
 		newPoll.save(function(err) {
-			if(err)
+			if (err)
 				throw err;
 			console.log("Saved poll " + newPoll.link + " to db");
 			savePollToUser(req, newPoll);
@@ -36,21 +39,29 @@ module.exports = function(app) {
 		//check db for polls with _id equal to req.params.pollID
 		var ID = req.params.ID;
 
-		Poll.findOne({'link': ID}, function(err, result) {
-			if(err)
+		Poll.findOne({
+			'link': ID
+		}, function(err, result) {
+			if (err)
 				throw err;
 
 
-			if(!result) {
-				res.render('public/poll.ejs', {found: false, ID: ID});
-			}
-			else {
-				res.render('public/poll.ejs', {found: true, poll: result, ID: ID});
+			if (!result) {
+				res.render('public/poll.ejs', {
+					found: false,
+					ID: ID
+				});
+			} else {
+				res.render('public/poll.ejs', {
+					found: true,
+					poll: result,
+					ID: ID
+				});
 			}
 		});
 	});
 
-	app.get('/poll/', function(req, res){
+	app.get('/poll/', function(req, res) {
 		res.redirect('/');
 	});
 }
@@ -60,12 +71,16 @@ function savePollToUser(req, poll) {
 	var updatedPolls = [];
 	console.log("Saving poll to user " + owner.id);
 
-	if(owner.ownedPolls)
+	if (owner.ownedPolls)
 		updatedPolls = owner.ownedPolls;
 
 	updatedPolls.push(poll);
-	User.findOneAndUpdate({'_id': owner.id}, {ownedPolls: updatedPolls}, function(err, user){
-		if(err)
+	User.findOneAndUpdate({
+		'_id': owner.id
+	}, {
+		ownedPolls: updatedPolls
+	}, function(err, user) {
+		if (err)
 			throw err;
 
 		req.session.passport.user.ownedPolls = updatedPolls;
@@ -79,4 +94,4 @@ function isLoggedIn(req, res, next) {
 		return next();
 	else
 		res.redirect('/');
-	}
+}

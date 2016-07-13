@@ -15,15 +15,23 @@ mongoose.connect(process.env.MLAB_URL);
 
 app.use(morgan('dev'));
 app.use(cookieParser());
-app.use(bodyParser.json({extended: true}));
-app.use(bodyParser.urlencoded({extended: true}));
-app.set("view options", {layout: false});
+app.use(bodyParser.json({
+	extended: true
+}));
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+app.set("view options", {
+	layout: false
+});
 app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname + "/client/views");
 app.set('view engine', 'ejs');
 
 // passport
-app.use(session({secret: process.env.SESSION_SECRET}));
+app.use(session({
+	secret: process.env.SESSION_SECRET
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

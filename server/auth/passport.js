@@ -95,7 +95,10 @@ module.exports = function(passport) {
 
 	//Facebook
 	passport.use(new FacebookStrategy({
-		clientID: configAuth.facebookAuth.clientID, clientSecret: configAuth.facebookAuth.clientSecret, callbackURL: configAuth.facebookAuth.callbackURL, passReqToCallback: true, // allows us to pass in the req from our route (lets us check if a user is logged in or not)
+		clientID: configAuth.facebookAuth.clientID,
+		clientSecret: configAuth.facebookAuth.clientSecret,
+		callbackURL: configAuth.facebookAuth.callbackURL,
+		passReqToCallback: true, // allows us to pass in the req from our route (lets us check if a user is logged in or not)
 		profileFields: ["emails", "displayName", "name"]
 	}, function(req, token, refreshToken, profile, done) {
 		process.nextTick(function() {
@@ -172,17 +175,19 @@ module.exports = function(passport) {
 						user.twitter.token = token;
 						user.twitter.username = profile.username;
 						user.twitter.displayName = profile.displayName;
-						user.twitter.image = profile.photos[0].value.replace('_normal',''); // cut _normal
+						user.twitter.image = profile.photos[0].value.replace('_normal', ''); // cut _normal
 
-						User.findOneAndUpdate({'twitter.id': profile.id}, {
-							twitter: user.twitter
-						},
-						function(err, userfound){
-							if(err)
-								throw err;
+						User.findOneAndUpdate({
+								'twitter.id': profile.id
+							}, {
+								twitter: user.twitter
+							},
+							function(err, userfound) {
+								if (err)
+									throw err;
 
-							return done(null, user); // user found, return that user
-						});
+								return done(null, user); // user found, return that user
+							});
 					} else {
 						// if there is no user, create them
 						var newUser = new User();
@@ -192,7 +197,7 @@ module.exports = function(passport) {
 						newUser.twitter.token = token;
 						newUser.twitter.username = profile.username;
 						newUser.twitter.displayName = profile.displayName;
-						newUser.twitter.image = profile.photos[0].value.replace('_normal',''); // cut _normal
+						newUser.twitter.image = profile.photos[0].value.replace('_normal', ''); // cut _normal
 
 
 						// save our user into the database
@@ -210,7 +215,7 @@ module.exports = function(passport) {
 				user.twitter.token = token;
 				user.twitter.username = profile.username;
 				user.twitter.displayName = profile.displayName;
-				user.twitter.image = profile.photos[0].value.replace('_normal','');
+				user.twitter.image = profile.photos[0].value.replace('_normal', '');
 
 				// save the user
 				user.save(function(err) {

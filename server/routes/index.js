@@ -11,7 +11,9 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('authenticated/profile.ejs', {user: req.user}); // get the user out of session and pass to template
+		res.render('authenticated/profile.ejs', {
+			user: req.user
+		}); // get the user out of session and pass to template
 	});
 
 	app.get('/logout', function(req, res) {
@@ -26,7 +28,7 @@ module.exports = function(app, passport) {
 	polls(app);
 
 	app.get('*', function(req, res) {
-		res.redirect('/');
+		res.status(404).render('public/index.ejs');
 	});
 };
 
@@ -35,7 +37,7 @@ function isLoggedIn(req, res, next) {
 		return next();
 	else
 		res.redirect('/');
-	}
+}
 
 function getUserIP(req) {
 	var ip;

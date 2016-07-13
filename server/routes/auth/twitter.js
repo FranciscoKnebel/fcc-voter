@@ -7,7 +7,9 @@ module.exports = function(app, passport) {
 		failureRedirect: '/'
 	}));
 
-	app.get('/connect/twitter', passport.authorize('twitter', {scope: 'email'}));
+	app.get('/connect/twitter', passport.authorize('twitter', {
+		scope: 'email'
+	}));
 
 	app.get('/connect/twitter/callback', passport.authorize('twitter', {
 		successRedirect: '/profile',

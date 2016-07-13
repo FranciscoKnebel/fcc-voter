@@ -1,6 +1,8 @@
 module.exports = function(app, passport) {
 	app.get('/login', function(req, res) {
-		res.render('public/login.ejs', {message: req.flash('loginMessage')});
+		res.render('public/login.ejs', {
+			message: req.flash('loginMessage')
+		});
 	});
 
 	app.post('/login', passport.authenticate('local-login', {
@@ -14,7 +16,9 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/signup', function(req, res) {
-		res.render('public/signup.ejs', {message: req.flash('signupMessage')});
+		res.render('public/signup.ejs', {
+			message: req.flash('signupMessage')
+		});
 	});
 
 	app.post('/signup', passport.authenticate('local-signup', {
@@ -24,7 +28,9 @@ module.exports = function(app, passport) {
 	}));
 
 	app.get('/connect/local', function(req, res) {
-		res.render('public/connect-local.ejs', {message: req.flash('loginMessage')});
+		res.render('public/connect-local.ejs', {
+			message: req.flash('signupMessage')
+		});
 	});
 
 	app.post('/connect/local', passport.authenticate('local-signup', {

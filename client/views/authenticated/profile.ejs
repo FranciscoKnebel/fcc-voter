@@ -1,29 +1,29 @@
 <!doctype html>
 <html>
-    <head>
-        <title>Votação.com</title>
-        <% include ../snippets/sharedCSS %>
-        <% include ../snippets/analyticsUser %>
-    </head>
-    <body>
-        <div class="container">
+	<head>
+		<title>Votação.com</title>
+		<% include ../snippets/sharedCSS %>
+		<% include ../snippets/analyticsUser %>
+	</head>
+	<body>
+		<div class="ui container">
 
-            <div class="page-header text-center">
-                <h1>
-                    <span class="fa fa-anchor"></span>
-                    Profile Page</h1>
-                <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-                <br>
-                <a href="/poll/new" class="btn btn-default">New Poll</a>
+			<div class="page-header text-center">
+				<h1>
+					<span class="fa fa-anchor"></span>
+					Profile Page</h1>
+				<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+				<br>
+				<a href="/poll/new" class="btn btn-default">New Poll</a>
 
-            </div>
+			</div>
 
-            <div class="row">
-                <% include ../snippets/profiles %>
-            </div>
+			<div class="row">
+				<% include ../snippets/profiles %>
+			</div>
 
-        </div>
+		</div>
 
-        <% include ../snippets/sharedJS %>
-    </body>
+		<% include ../snippets/sharedJS %>
+	</body>
 </html>
