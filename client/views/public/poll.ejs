@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Votação.com</title>
+		<% include ../snippets/sharedCSS %>
+		<% include ../snippets/analyticsUser %>
+	</head>
+	<body>
+		<div class="container well">
+			<% if (found) { %>
+				<div class="page-header text-center">
+					<h1><%= poll.title %></h1>
+					<h5>http://www.votação.com/poll/<%= ID %></h5>
+				</div>
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>Alternative</th>
+								<th>Votes</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% poll.options.forEach(function(option){ %>
+								<tr>
+									<td>
+										<h3><%= option.text%></h3>
+									</td>
+									<td>
+										<p><%= option.votes%></p>
+									</td>
+								</tr>
+							<% }); %>
+						</tbody>
+					</table>
+				</div>
+			<% } else { %>
+				<div class="page-header text-center">
+					<h1>Poll not found!</h1>
+					<h5>http://www.votação.com/poll/<%= ID %></h5>
+				</div>
+				Poll not found.
+			<% } %>
+		</div>
+		<% include ../snippets/sharedJS %>
+	</body>
+</html>

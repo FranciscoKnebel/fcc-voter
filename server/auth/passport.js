@@ -167,9 +167,22 @@ module.exports = function(passport) {
 					if (err)
 						return done(err);
 
-					// if the user is found then log them in
+					// if the user is found then log them in, after updating.
 					if (user) {
-						return done(null, user); // user found, return that user
+						user.twitter.token = token;
+						user.twitter.username = profile.username;
+						user.twitter.displayName = profile.displayName;
+						user.twitter.image = profile.photos[0].value.replace('_normal',''); // cut _normal
+
+						User.findOneAndUpdate({'twitter.id': profile.id}, {
+							twitter: user.twitter
+						},
+						function(err, userfound){
+							if(err)
+								throw err;
+
+							return done(null, user); // user found, return that user
+						});
 					} else {
 						// if there is no user, create them
 						var newUser = new User();
@@ -179,6 +192,8 @@ module.exports = function(passport) {
 						newUser.twitter.token = token;
 						newUser.twitter.username = profile.username;
 						newUser.twitter.displayName = profile.displayName;
+						newUser.twitter.image = profile.photos[0].value.replace('_normal',''); // cut _normal
+
 
 						// save our user into the database
 						newUser.save(function(err) {
@@ -195,6 +210,7 @@ module.exports = function(passport) {
 				user.twitter.token = token;
 				user.twitter.username = profile.username;
 				user.twitter.displayName = profile.displayName;
+				user.twitter.image = profile.photos[0].value.replace('_normal','');
 
 				// save the user
 				user.save(function(err) {

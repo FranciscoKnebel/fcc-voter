@@ -4,7 +4,7 @@ var User = require('../models/user');
 module.exports = function(app) {
 
 	app.get('/poll/new', isLoggedIn, function(req, res) {
-		res.render("newPoll.ejs");
+		res.render("authenticated/newPoll.ejs");
 	});
 
 	app.post('/poll/new', isLoggedIn, function(req, res) {
@@ -42,10 +42,10 @@ module.exports = function(app) {
 
 
 			if(!result) {
-				res.render('poll.ejs', {found: false, ID: ID});
+				res.render('public/poll.ejs', {found: false, ID: ID});
 			}
 			else {
-				res.render('poll.ejs', {found: true, poll: result, ID: ID});
+				res.render('public/poll.ejs', {found: true, poll: result, ID: ID});
 			}
 		});
 	});

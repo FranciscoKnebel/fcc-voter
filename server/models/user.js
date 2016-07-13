@@ -20,11 +20,13 @@ var userSchema = mongoose.Schema({
 		token: String,
 		displayName: String,
 		username: String,
+		image: String,
 		_id: false
 	},
 	custom: {
 		username: String,
 		email: String,
+		image: String,
 		_id: false
 	},
 	ownedPolls: [

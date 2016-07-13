@@ -2,15 +2,8 @@
 <html>
     <head>
       <title>Votação.com</title>
-      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-      <style>
-          body {
-              padding-top: 80px;
-              word-wrap: break-word;
-          }
-
-      </style>
+      <% include ../snippets/sharedCSS %>
+      <% include ../snippets/analyticsUser %>
     </head>
     <body ng-app="poll">
         <div class="container">
@@ -39,8 +32,8 @@
                 </form>
             </div>
         </div>
-        <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js'></script>
-        <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
+
+        <% include ../snippets/sharedJS %>
         <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js'></script>
         <script src="/js/newPoll.controller.js" rel="stylesheet"></script>
     </body>

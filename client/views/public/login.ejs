@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Votação.com</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<% include ../snippets/sharedCSS %>
+		<% include ../snippets/analytics %>
+	</head>
+	<body>
+		<div class="ui center aligned container">
+			<h1>
+				<i class="sign in icon"></i>
+				Login</h1>
+			<!-- show any messages that come back with authentication -->
+			<% if (message.length > 0) { %>
+				<div class="ui warning message">
+					<%= message %>
+				</div>
+			<% } %>
+			<!-- LOGIN FORM -->
+			<div class="ui two column centered stackable grid">
+				<div class="column">
+					<form class="ui form" action="/login" method="post">
+						<div class="required field">
+							<label>Email</label>
+							<input required type="email" name="email" placeholder="email">
+						</div>
+						<div class="required field">
+							<label>Password</label>
+							<input required type="password" name="password" placeholder="password">
+						</div>
+						<button type="submit" class="ui submit button">Login</button>
+					</form>
+				</div>
+			</div>
+
+			<div class="ui horizontal divider" style="padding: 1em;">Need an account?</div>
+			<div class="ui buttons" style="margin: 1em;">
+				<a href="/signup" class="ui vertical animated button">
+					<div class="visible content">
+						Signup</div>
+					<div class="hidden content">
+						<i class="left arrow icon"></i>
+					</div>
+				</a>
+				<div class="or"></div>
+				<a href="/" class="ui vertical animated button">
+					<div class="visible content">
+						Home</div>
+					<div class="hidden content">
+						<i class="right arrow icon"></i>
+					</div>
+				</a>
+			</div>
+			<div class="ui horizontal divider"></div>
+			<div class="ui buttons">
+				<a href="/auth/facebook" class="ui facebook button">
+					<i class="facebook icon"></i>Facebook</a>
+				<a href="/auth/twitter" class="ui twitter button">
+					<i class="twitter icon"></i>Twitter</a>
+			</div>
+		</div>
+		<% include ../snippets/sharedJS %>
+	</body>
+</html>

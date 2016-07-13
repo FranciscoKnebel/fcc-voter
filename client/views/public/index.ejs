@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Votação.com</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<% include ../snippets/sharedCSS %>
+		<% include ../snippets/analytics %>
+	</head>
+	<body>
+		<div class="ui center aligned text container">
+			<h1>
+				<i class="lock icon"></i>
+				Votação.com</h1>
+			<h4 class="ui horizontal divider header">Login or Register with:</h4>
+			<div class="two ui large buttons">
+				<a href="/login" class="ui black button">
+					<i class="user icon"></i>Local Login</a>
+				<a href="/signup" class="ui grey button">
+					<i class="user icon"></i>Local Signup</a>
+			</div>
+			<div class="ui horizontal divider"></div>
+			<div class="two ui large buttons">
+				<a href="/auth/facebook" class="ui facebook button">
+					<i class="facebook icon"></i>Facebook</a>
+				<a href="/auth/twitter" class="ui twitter button">
+					<i class="twitter icon"></i>Twitter</a>
+			</div>
+		</div>
+	</div>
+	<% include ../snippets/sharedJS %>
+</body>
+</html>
