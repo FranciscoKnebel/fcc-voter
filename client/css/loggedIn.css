@@ -1,0 +1,9 @@
+body {
+  background-color: #F1F1F1;
+}
+
+@media screen and (max-width: 480px) {
+    .ui.container {
+      margin: 0 !important;
+    }
+}

@@ -1,40 +1,68 @@
 <!doctype html>
 <html>
-    <head>
-      <title>Votação.com</title>
-      <% include ../snippets/sharedCSS %>
-      <% include ../snippets/analyticsUser %>
-    </head>
-    <body ng-app="poll">
-        <div class="container">
-            <div class="page-header text-center">
-                <h1>
-                    <span class="fa fa-anchor"></span>Profile Page</h1>
-                <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-                <br>
-            </div>
+	<head>
+		<title>Votação.com</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<% include ../snippets/sharedCSS %>
+		<% include ../snippets/analyticsUser %>
 
-            <div class="row" ng-controller="pollController">
-                <form>
-                    <div class="form-group">
-                        <label>Title</label>
-                        <input name="question" type="text" placeholder="Enter your Question" ng-model="newPoll.question"></input>
-                    </div>
-                    <div class="form-group" ng-repeat="option in newPoll.options">
-                      <label> Option {{ option.id + 1 }}</label>
-                      <input id="opt{{ option.id }}" name="text" type="text" placeholder="Poll Option" ng-model="option.text">
-                      <button ng-hide="$first" class="btn btn-danger btn-xs" ng-click="deleteOption(option.id)"><i class="fa fa-minus fa-xs"></i></button>
-                    </div>
+		<link rel="stylesheet" href="/css/loggedIn.css"/>
+	</head>
+	<body ng-app="poll" class="ui container">
+		<div class="ui middle aligned center aligned grid">
+			<div class="column">
+				<h1 class="ui header">
+					<i class="plus square o icon"></i>New Poll
+				</h1>
 
-                    <button class="btn btn-success btn-xs" title="Add Poll Option" ng-click="addOption()"><i class="fa fa-plus fa-xs"></i>&nbsp;Add Option</button>
-                    <br><button class="btn btn-primary" ng-click="createPoll()">Create a Poll</button>
+				<a href="/profile" class="ui small teal button">
+					<i class="undo icon"></i>
+					Back to profile</a>
+			</div>
+		</div>
 
-                </form>
-            </div>
-        </div>
+		<div class="two column stackable ui grid">
+			<div class="stretched row">
+				<div class="column">
+					<div class="ui segment" ng-controller="pollController">
+						<form class="ui large form">
+							<div class="field">
+								<div class="ui right icon input">
+									<i class="question icon"></i>
+									<input required name="question" type="text" placeholder="Enter your Question" ng-model="newPoll.question"></input>
+								</div>
+							</div>
+							<div class="field" ng-repeat="option in newPoll.options">
+								<div class="ui right icon input">
+									<input id="opt{{ option.id }}" name="text" type="text" placeholder="Option {{ option.id + 1 }}" ng-model="option.text" class="ui basic label">
+									<i class="inverted circular minus link icon" ng-hide="$first" class="large ui icon button" ng-click="deleteOption(option.id)"></i>
+								</div>
+							</div>
+						</form>
 
-        <% include ../snippets/sharedJS %>
-        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js'></script>
-        <script src="/js/newPoll.controller.js" rel="stylesheet"></script>
-    </body>
+						<br/>
+						<div class="ui two buttons">
+							<button class="ui positive button" title="Add Poll Option" ng-click="addOption()">
+								<i class="plus icon"></i>&nbsp;Add Option</button>
+							<div class="or"></div>
+							<button class="ui primary button" ng-click="createPoll()">Create a Poll</button>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="column">
+					<div class="ui segment">
+						Here will show a preview of the poll, with graphs, updated in real time.
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<% include ../snippets/sharedJS %>
+		<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js'></script>
+		<script src="/js/newPoll.controller.js" rel="stylesheet"></script>
+	</body>
 </html>

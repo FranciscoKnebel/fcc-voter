@@ -4,7 +4,9 @@ var User = require('../models/user');
 module.exports = function(app) {
 
 	app.get('/poll/new', isLoggedIn, function(req, res) {
-		res.render("authenticated/newPoll.ejs");
+		res.render("authenticated/newPoll.ejs", {
+			user: req.user
+		});
 	});
 
 	app.post('/poll/new', isLoggedIn, function(req, res) {
