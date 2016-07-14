@@ -31,10 +31,15 @@ module.exports = function(app) {
 				throw err;
 			console.log("Saved poll " + newPoll.link + " to db");
 			savePollToUser(req, newPoll);
+
+			var response = {
+				title: newPoll.title,
+				options: newPoll.options,
+				link: newPoll.link
+			}
+
+			res.status("200").send(response);
 		});
-
-
-		res.status("200").send("New question : " + newPoll.title);
 	});
 
 	app.get('/poll/:ID', function(req, res) {

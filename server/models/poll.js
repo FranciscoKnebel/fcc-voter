@@ -3,18 +3,15 @@ var shortid = require('shortid');
 
 var pollSchema = mongoose.Schema({
 	title: String,
-	created: Date,
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
 	},
-	options: [
-		{
-			text: String,
-			votes: Number,
-			_id: false
-		}
-	],
+	options: [{
+		text: String,
+		votes: Number,
+		_id: false
+	}],
 	totalVotes: Number,
 	link: {
 		type: String,

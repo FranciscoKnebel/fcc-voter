@@ -23,19 +23,17 @@ var userSchema = mongoose.Schema({
 		image: String,
 		_id: false
 	},
-	custom: {
+	defined: {
 		username: String,
 		email: String,
 		image: String,
 		_id: false
 	},
-	ownedPolls: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Poll'
-		}
-	]
-},{
+	ownedPolls: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Poll'
+	}]
+}, {
 	timestamps: {
 		createdAt: 'createdAt',
 		updatedAt: 'updatedAt'
