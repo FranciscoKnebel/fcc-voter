@@ -1,0 +1,10 @@
+<div class="" ng-repeat="poll in polls">
+	<div class="ui fitted divider"></div>
+	<span class="" data-tooltip="Poll has {{poll.options.length}} options. Total Votes: {{poll.totalVotes}}.">
+		<b>"{{poll.title}}"</b>
+	</span>
+	at:
+	<a href="/poll/{{poll.link}}">{{poll.link}}</a>
+	<br>Created at
+	{{poll.createdAt}}
+</div>

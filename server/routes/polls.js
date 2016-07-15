@@ -71,7 +71,6 @@ module.exports = function(app) {
 	app.get('/profile/getpolls', isLoggedIn, function(req, res) {
 		var owner = req.user;
 		var polls = [];
-		console.log(owner.ownedPolls);
 
 		if (!owner.ownedPolls)
 			res.send(polls);
@@ -82,7 +81,14 @@ module.exports = function(app) {
 				if (err)
 					throw err;
 
-				res.status(200).send(foundPolls);
+				//order from most recent to least.
+				var result = foundPolls.sort(function(a, b) {
+					a = new Date(a.createdAt);
+					b = new Date(b.createdAt);
+					return a > b ? -1 : a < b ? 1 : 0;
+				});
+
+				res.status(200).send(result);
 			});
 		}
 	});

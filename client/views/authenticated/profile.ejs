@@ -8,7 +8,7 @@
 		<% include ../snippets/analyticsUser %>
 		<link rel="stylesheet" href="/css/loggedIn.css">
 	</head>
-	<body class="ui container" ng-app="poll">
+	<body ng-app="poll">
 		<div class="ui middle aligned center aligned grid">
 			<div class="row">
 				<div class="column">
@@ -32,7 +32,7 @@
 
 			<div class="row">
 				<div class="column">
-					<div class="ui stacked segment styled fluid accordion">
+					<div class="ui stacked segment styled fluid accordion" ng-controller="showPolls">
 						<div class="title">
 							<i class="dropdown icon"></i>
 							User information
@@ -47,12 +47,11 @@
 						<div class="content">
 							Facebook, Twitter
 						</div>
-						<div class="title">
+						<div class="title" ng-click="getPolls()">
 							<i class="dropdown icon"></i>
 							Owned Polls
 						</div>
-						<div class="content" ng-controller="showPolls">
-							use a bunch of angular here, link to all user polls.
+						<div class="content">
 							<% include ../snippets/showPolls %>
 						</div>
 					</div>
