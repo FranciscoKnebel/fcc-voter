@@ -42,6 +42,45 @@ module.exports = function(app) {
 		});
 	});
 
+	app.post('/poll/vote/:ID', function(req, res) {
+		res.send(req.params.ID);
+	});
+
+	app.get('/poll/results/:ID', function(req, res) {
+		var ID = req.params.ID;
+
+		Poll.findOne({
+			'link': ID
+		}, function(err, result) {
+			if (err)
+				throw err;
+
+
+			if (!result) {
+				res.render('public/pollResults.ejs', {
+					found: false,
+					ID: ID
+				});
+			} else { //found the poll
+				if (req.isAuthenticated()) { //user is authenticated
+					res.render('public/pollResults.ejs', {
+						found: true,
+						authenticated: true,
+						poll: result,
+						ID: ID
+					});
+				} else {
+					res.render('public/pollResults.ejs', {
+						found: true,
+						authenticated: false,
+						poll: result,
+						ID: ID
+					});
+				}
+			}
+		});
+	});
+
 	app.get('/poll/:ID', function(req, res) {
 		//check db for polls with _id equal to req.params.pollID
 		var ID = req.params.ID;
@@ -58,12 +97,22 @@ module.exports = function(app) {
 					found: false,
 					ID: ID
 				});
-			} else {
-				res.render('public/poll.ejs', {
-					found: true,
-					poll: result,
-					ID: ID
-				});
+			} else { //found the poll
+				if (req.isAuthenticated()) { //user is authenticated
+					res.render('public/poll.ejs', {
+						found: true,
+						authenticated: true,
+						poll: result,
+						ID: ID
+					});
+				} else {
+					res.render('public/poll.ejs', {
+						found: true,
+						authenticated: false,
+						poll: result,
+						ID: ID
+					});
+				}
 			}
 		});
 	});

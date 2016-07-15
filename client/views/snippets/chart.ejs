@@ -1,29 +1,60 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.js"></script>
 
 <script>
+	var randomColorGenerator = function() {
+		return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
+	};
 	var ctx = document.getElementById("myChart");
 	var chartData = {
 		labels: [
-			"Red", "Blue", "Yellow"
+			<% for(i = 0; i < poll.options.length -1; i++) { %>
+			"<%= poll.options[i].text %>", <% } %>
+			"<%= poll.options[poll.options.length-1].text %>"
 		],
 		datasets: [
 			{
+				label: "Amount of votes",
 				data: [
-					300, 50, 100
+					<% for(i = 0; i < poll.options.length -1; i++) { %>
+					<%= poll.options[i].votes %>, <% } %>
+					1
 				],
-				backgroundColor: [
-					"#FF6384", "#36A2EB", "#FFCE56"
-				],
-				hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+				backgroundColor: [<% for(i = 0; i < poll.options.length -1; i++) { %>
+					randomColorGenerator(), <% } %>
+					randomColorGenerator()]
 			}
 		]
 	};
 
+	var barOptions = {
+		responsive: true,
+		title: {
+			display: true,
+			text: "<%= poll.title %> - [<%= poll.totalVotes %>]"
+		},
+		scales: {
+			yAxes: [
+				{
+					ticks: {
+						beginAtZero: true,
+						min: 0
+					}
+				}
+			]
+		}
+	}
+
+	var pieOptions = {
+		responsive: true,
+		title: {
+			display: true,
+			text: "<%= poll.title %> - [<%= poll.totalVotes %>]"
+		}
+	}
+
 	var myChart = new Chart(ctx, {
 		type: 'pie',
 		data: chartData,
-		animation: {
-			animateScale: true
-		}
+		options: pieOptions
 	});
 </script>

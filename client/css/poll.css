@@ -1,0 +1,28 @@
+body {
+  background-color: #B70B2F;
+}
+
+.column {
+  max-width: 50%
+}
+
+@media screen and (max-width: 768px) {
+    .column {
+      max-width: 60%
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .column {
+      max-width: 70%
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ui.container {
+      margin: 0 !important;
+    }
+    .column {
+      max-width: 90%
+    }
+}

@@ -2,46 +2,51 @@
 <html>
 	<head>
 		<title>Votação.com</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<% include ../snippets/sharedCSS %>
 		<% include ../snippets/analytics %>
+		<link rel="stylesheet" href="/css/poll.css">
 	</head>
-	<body>
-		<div class="container well">
-			<% if (found) { %>
-				<div class="page-header text-center">
-					<h1><%= poll.title %></h1>
-					<h5>http://www.votação.com/poll/<%= ID %></h5>
+	<body ng-app="poll">
+		<div class="ui middle aligned center aligned grid" ng-controller="pollPage-controller">
+			<% if(found) { %>
+				<div class="row">
+					<div class="column">
+						<h1 class="ui header">
+							<i class="list icon"></i>Poll Page
+						</h1>
+						<h5 class="ui header">http://www.votação.com/poll/<%= ID %></h5>
+					</div>
 				</div>
-				<div class="table-responsive">
-					<table class="table table-striped table-bordered table-hover">
-						<thead>
-							<tr>
-								<th>Alternative</th>
-								<th>Votes</th>
-							</tr>
-						</thead>
-						<tbody>
-							<% poll.options.forEach(function(option){ %>
-								<tr>
-									<td>
-										<h3><%= option.text%></h3>
-									</td>
-									<td>
-										<p><%= option.votes%></p>
-									</td>
-								</tr>
-							<% }); %>
-						</tbody>
-					</table>
+				<div class="row">
+					<div class="column">
+						<div class="ui stacked segment">
+							//show poll options, show votes
+
+							<% if(authenticated) { %>
+								// let user add options to poll
+							<% } %>
+						</div>
+					</div>
 				</div>
 			<% } else { %>
-				<div class="page-header text-center">
-					<h1>Poll not found!</h1>
-					<h5>http://www.votação.com/poll/<%= ID %></h5>
+				<div class="row">
+					<div class="column">
+						<h1 class="ui header">
+							<i class="list icon"></i>Poll Page
+						</h1>
+						<h5 class="ui header">http://www.votação.com/poll/<%= ID %></h5>
+					</div>
 				</div>
-				Poll not found.
+				<div class="row">
+					<div class="column">
+						<div class="ui stacked segment">Poll
+							<%= ID %>
+							was not found in our database.</div>
+					</div>
+				</div>
 			<% } %>
 		</div>
-		<% include ../snippets/sharedJS %>
 	</body>
 </html>

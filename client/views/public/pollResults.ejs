@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Votação.com</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<% include ../snippets/sharedCSS %>
+		<% include ../snippets/analytics %>
+		<link rel="stylesheet" href="/css/poll.css">
+	</head>
+	<body>
+		<div class="ui middle aligned center aligned grid">
+			<div class="row">
+				<div class="column">
+					<h1 class="ui header">
+						<i class="pie chart icon"></i>Poll Results
+					</h1>
+					<h5 class="ui header">http://www.votação.com/poll/results/<%= ID %></h5>
+				</div>
+			</div>
+			<% if(found) { %>
+				<div class="row">
+					<div class="column">
+						<div class="ui stacked segment">
+							<% if(poll.totalVotes > 0) { %>
+								<canvas id="myChart" height="300" width="300"></canvas>
+							<% } else { %>
+								<p>Poll "<%= poll.title %>" has no votes yet.</p>
+								<p>
+									Vote at
+									<a href="/poll/<%= ID %>">/poll/<%= ID %></a>
+								</p>
+								ADD ILLUSTRATIVE IMAGE HERE 1
+							<% } %>
+						</div>
+					</div>
+				</div>
+			<% } else { %>
+				<div class="row">
+					<div class="column">
+						<div class="ui stacked segment">
+							<p>
+								Poll
+								<%= ID %>
+								was not found in our database.
+							</p>
+							ADD ILLUSTRATIVE IMAGE HERE 2
+						</div>
+					</div>
+				</div>
+			<% } %>
+		</div>
+
+		<% if(found) { %>
+			<% include ../snippets/sharedJS %>
+			<% include ../snippets/chart %>
+		<% } %>
+	</body>
+</html>
