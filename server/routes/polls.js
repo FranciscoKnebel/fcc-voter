@@ -68,6 +68,25 @@ module.exports = function(app) {
 		});
 	});
 
+	app.get('/profile/getpolls', isLoggedIn, function(req, res) {
+		var owner = req.user;
+		var polls = [];
+		console.log(owner.ownedPolls);
+
+		if (!owner.ownedPolls)
+			res.send(polls);
+		else {
+			Poll.find({
+				'owner': owner.id
+			}, function(err, foundPolls) {
+				if (err)
+					throw err;
+
+				res.status(200).send(foundPolls);
+			});
+		}
+	});
+
 	app.get('/poll/', function(req, res) {
 		res.redirect('/');
 	});
@@ -75,25 +94,22 @@ module.exports = function(app) {
 
 function savePollToUser(req, poll) {
 	var owner = poll.owner;
-	var updatedPolls = [];
 	console.log("Saving poll to user " + owner.id);
+	User.findByIdAndUpdate(owner.id, {
+			$push: {
+				ownedPolls: poll
+			}
+		}, {
+			safe: true,
+			upsert: true
+		},
+		function(err, usr) {
+			if (err)
+				throw err;
 
-	if (owner.ownedPolls)
-		updatedPolls = owner.ownedPolls;
-
-	updatedPolls.push(poll);
-	User.findOneAndUpdate({
-		'_id': owner.id
-	}, {
-		ownedPolls: updatedPolls
-	}, function(err, user) {
-		if (err)
-			throw err;
-
-		req.session.passport.user.ownedPolls = updatedPolls;
-	});
-
-	return;
+			console.log("Saved poll to user " + usr.id);
+			req.session.passport.user.ownedPolls = usr.ownedPolls;
+		});
 }
 
 function isLoggedIn(req, res, next) {

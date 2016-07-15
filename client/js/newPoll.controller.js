@@ -58,6 +58,17 @@ app.controller('pollController', function($scope, $http, $location) {
 				$scope.loading = "";
 				$scope.success = response.data;
 				$scope.showMessage = true;
+
+				$scope.newPoll = {
+					options: [{
+						id: 0,
+						text: ""
+					}, {
+						id: 1,
+						text: ""
+					}]
+				};
+				$scope.newPoll.question = "";
 			},
 			function(response) {
 				$scope.message = "Creating poll failed. Try again later.";

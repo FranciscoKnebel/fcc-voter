@@ -45,10 +45,10 @@
 						<button class="ui positive button" title="Add Poll Option" ng-click="addOption()">
 							<i class="plus icon"></i>&nbsp;Add Option</button>
 						<div class="or"></div>
-						<button class="ui primary button" ng-click="createPoll()">Create a Poll</button>
+						<button class="ui primary button" ng-click="createPoll()" ng-class="{disabled: loading}">Create a Poll</button>
 					</div>
-
 				</div>
+
 				<div class="ui raised segment" ng-show="showMessage">
 					<div class="ui error message" ng-show="message">
 						{{message}}

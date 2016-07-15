@@ -11,6 +11,7 @@ session = require('express-session');
 routes = require('./server/routes/index');
 app = express();
 
+mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MLAB_URL);
 
 app.use(morgan('dev'));

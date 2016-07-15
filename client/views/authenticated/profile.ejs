@@ -2,28 +2,79 @@
 <html>
 	<head>
 		<title>Votação.com</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<% include ../snippets/sharedCSS %>
 		<% include ../snippets/analyticsUser %>
+		<link rel="stylesheet" href="/css/loggedIn.css">
 	</head>
-	<body>
-		<div class="ui container">
-
-			<div class="page-header text-center">
-				<h1>
-					<span class="fa fa-anchor"></span>
-					Profile Page</h1>
-				<a href="/logout" class="btn btn-default btn-sm">Logout</a>
-				<br>
-				<a href="/poll/new" class="btn btn-default">New Poll</a>
-
+	<body class="ui container" ng-app="poll">
+		<div class="ui middle aligned center aligned grid">
+			<div class="row">
+				<div class="column">
+					<h1 class="ui header">
+						<i class="anchor icon"></i>Profile Page
+					</h1>
+					<div class="ui vertical large buttons">
+						<a href="/logout" class="ui animated red button">
+							<div class="visible content">
+								Logout
+							</div>
+							<div class="hidden content">
+								<i class="log out large icon"></i>
+							</div>
+						</a>
+						<br>
+						<a href="/poll/new" class="ui primary button">New Poll</a>
+					</div>
+				</div>
 			</div>
 
 			<div class="row">
-				<% include ../snippets/profiles %>
+				<div class="column">
+					<div class="ui stacked segment styled fluid accordion">
+						<div class="title">
+							<i class="dropdown icon"></i>
+							User information
+						</div>
+						<div class="content">
+							User name, email and photo. Buttons to change each one to overload the other ones.
+						</div>
+						<div class="title">
+							<i class="dropdown icon"></i>
+							Social Networks
+						</div>
+						<div class="content">
+							Facebook, Twitter
+						</div>
+						<div class="title">
+							<i class="dropdown icon"></i>
+							Owned Polls
+						</div>
+						<div class="content" ng-controller="showPolls">
+							use a bunch of angular here, link to all user polls.
+							<% include ../snippets/showPolls %>
+						</div>
+					</div>
+				</div>
 			</div>
-
 		</div>
 
 		<% include ../snippets/sharedJS %>
+		<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js'></script>
+		<script src='/js/showPolls.controller.js'></script>
+		<script src="/js/profile.js"></script>
 	</body>
 </html>
+<!--
+<div class="ui middle aligned center aligned grid">
+<div class="column">
+	<h1 class="ui header">
+		<i class="plus square o icon"></i>New Poll
+	</h1>
+
+	<a href="/profile" class="ui small teal button">
+		<i class="undo icon"></i>
+		Back to profile</a>
+</div>
+</div>-->
