@@ -1,0 +1,23 @@
+<div class="ui three large buttons">
+	<% if (user.local.email) { %>
+		<a href="/unlink/local" class="ui button">Unlink Local</a>
+	<% } else { %>
+		<a href="/connect/local" class="ui button">Connect Local</a>
+	<% } %>
+
+	<% if (user.facebook.token) { %>
+		<a href="/unlink/facebook" class="ui facebook button">
+			<i class="facebook icon"></i>Unlink</a>
+	<% } else { %>
+		<a href="/connect/facebook" class="ui facebook button">
+			<i class="facebook icon"></i>Connect</a>
+	<% } %>
+
+	<% if (user.twitter.token) { %>
+		<a href="/unlink/twitter" class="ui twitter button">
+			<i class="twitter icon"></i>Unlink</a>
+	<% } else { %>
+		<a href="/connect/twitter" class="ui twitter button">
+			<i class="twitter icon"></i>Connect</a>
+	<% } %>
+</div>

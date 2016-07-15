@@ -37,15 +37,15 @@
 							<i class="dropdown icon"></i>
 							User information
 						</div>
-						<div class="content">
+						<div class="content" style="padding: 0;">
 							User name, email and photo. Buttons to change each one to overload the other ones.
 						</div>
 						<div class="title">
 							<i class="dropdown icon"></i>
-							Social Networks
+							Connect Accounts
 						</div>
-						<div class="content">
-							Facebook, Twitter
+						<div class="content" style="padding: 0;">
+							<% include ../snippets/connectAccounts %>
 						</div>
 						<div class="title" ng-click="getPolls()">
 							<i class="dropdown icon"></i>
@@ -65,15 +65,3 @@
 		<script src="/js/profile.js"></script>
 	</body>
 </html>
-<!--
-<div class="ui middle aligned center aligned grid">
-<div class="column">
-	<h1 class="ui header">
-		<i class="plus square o icon"></i>New Poll
-	</h1>
-
-	<a href="/profile" class="ui small teal button">
-		<i class="undo icon"></i>
-		Back to profile</a>
-</div>
-</div>-->
