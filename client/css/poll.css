@@ -34,3 +34,7 @@ th.sorted.ascending:after {
 th.sorted.descending:after {
     content: " \2193";
 }
+
+td {
+  word-break: break-all !important;
+}
