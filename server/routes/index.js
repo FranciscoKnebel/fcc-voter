@@ -7,7 +7,11 @@ var twitterAuth = require('./auth/twitter');
 module.exports = function(app, passport) {
 
 	app.get('/', function(req, res) {
-		res.render('public/index.ejs');
+		if (req.isAuthenticated()) {
+			res.redirect('/profile');
+		} else {
+			res.render('public/index.ejs');
+		};
 	});
 
 	app.get('/profile', isLoggedIn, function(req, res) {
@@ -16,8 +20,9 @@ module.exports = function(app, passport) {
 		}); // get the user out of session and pass to template
 	});
 
-	app.get('/logout', function(req, res) {
+	app.get('/logout', isLoggedIn, function(req, res) {
 		req.logout();
+
 		res.redirect('/');
 	});
 
@@ -37,6 +42,13 @@ function isLoggedIn(req, res, next) {
 		return next();
 	else
 		res.redirect('/');
+}
+
+function isLoggedOut(req, res, next) {
+	if (req.isUnauthenticated()) {
+		return next();
+	}
+	res.redirect('/');
 }
 
 function getUserIP(req) {

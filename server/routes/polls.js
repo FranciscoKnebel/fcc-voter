@@ -200,6 +200,7 @@ function savePollToUser(req, poll) {
 				throw err;
 
 			console.log("Saved poll to user " + usr.id);
+			req.user.ownedPolls = usr.ownedPolls;
 			req.session.passport.user.ownedPolls = usr.ownedPolls;
 		});
 }

@@ -15,7 +15,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MLAB_URL);
 
 app.use(morgan('dev'));
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(bodyParser.json({
 	extended: true
 }));
@@ -31,7 +31,10 @@ app.set('view engine', 'ejs');
 
 // passport
 app.use(session({
-	secret: process.env.SESSION_SECRET
+	secret: process.env.SESSION_SECRET,
+	name: "Votação.com",
+	resave: true,
+	saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
