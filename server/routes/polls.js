@@ -46,6 +46,40 @@ module.exports = function(app) {
 		res.send(req.params.ID);
 	});
 
+	app.post('/poll/add/:ID', isLoggedIn, function(req, res) {
+		var pollOptions = [];
+		var passedOptions = req.body;
+		for (var i = 0; i < passedOptions.length; i++) {
+			pollOptions.push({
+				votes: 0,
+				text: passedOptions[i].text
+			});
+		}
+		console.log("Finding poll to push options.");
+
+		Poll.findOneAndUpdate({
+				'link': req.params.ID
+			}, {
+				$push: { //add sub-array to db array
+					options: {
+						$each: pollOptions
+					}
+				}
+			}, {
+				safe: true,
+				upsert: true
+			},
+			function(err, poll) {
+				if (err)
+					throw err;
+				res.send("Added options to poll " + poll.link);
+			});
+	});
+
+	app.get('/poll/results/', function(req, res) {
+		res.redirect('/stats');
+	});
+
 	app.get('/poll/results/:ID', function(req, res) {
 		var ID = req.params.ID;
 
@@ -90,7 +124,6 @@ module.exports = function(app) {
 		}, function(err, result) {
 			if (err)
 				throw err;
-
 
 			if (!result) {
 				res.render('public/poll.ejs', {
@@ -143,7 +176,11 @@ module.exports = function(app) {
 	});
 
 	app.get('/poll/', function(req, res) {
-		res.redirect('/');
+		res.redirect('/stats');
+	});
+
+	app.get('/stats', function(req, res) {
+		res.send("Stats.");
 	});
 }
 

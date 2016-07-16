@@ -9,8 +9,7 @@ var pollSchema = mongoose.Schema({
 	},
 	options: [{
 		text: String,
-		votes: Number,
-		_id: false
+		votes: Number
 	}],
 	totalVotes: Number,
 	link: {
@@ -25,7 +24,7 @@ var pollSchema = mongoose.Schema({
 });
 
 pollSchema.methods.voteFor = function(option) {
-	var selectedIndex = findOptionIndex(this.options, 'text', option.text);
+	var selectedIndex = findOptionIndex(this.options, '_id', option.id);
 
 	if (!selectedIndex) {
 		this.options[selectedIndex].votes++;
@@ -33,6 +32,11 @@ pollSchema.methods.voteFor = function(option) {
 
 		this.totalVotes++;
 		this.markModified('totalVotes');
+
+		this.save(function(err) {
+			if (err)
+				throw err;
+		});
 	}
 }
 

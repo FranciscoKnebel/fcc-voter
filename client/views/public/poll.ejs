@@ -22,10 +22,48 @@
 				<div class="row">
 					<div class="column">
 						<div class="ui stacked segment">
-							//show poll options, show votes
+							<table class="ui sortable unstackable table">
+								<thead>
+									<tr>
+										<th class="no-sort">Option</th>
+										<th class="sorted descending">Votes</th>
+										<th class="no-sort"></th>
+									</tr>
+								</thead>
+								<tbody id="optionsTable">
+									<% var options = poll.options %>
+									<% for(i = 0; i < options.length; i++) { %>
+										<tr>
+											<td>
+												<%= options[i].text %>
+											</td>
+											<td>
+												<%= options[i].votes %>
+											</td>
+											<td class="collapsing">
+												<button class="ui disabled positive icon button" title="Vote for Option" ng-click="vote('<%= options[i].id %>')">
+													<i class="check icon"></i>
+												</button>
+											</td>
+										</tr>
+									<% } %>
+								</tbody>
+							</table>
 
 							<% if(authenticated) { %>
-								// let user add options to poll
+								<button class="ui secondary button" title="Add Poll Option" ng-click="addOption()">
+									<i class="plus icon"></i>Add Option</button>
+								<div class="ui divider"></div>
+
+								<form class="ui large form" ng-show="addingOption">
+									<div class="field" ng-repeat="option in options">
+										<div class="ui left icon input">
+											<i class="question icon"></i>
+											<input name="addedOption" type="text" placeholder="Input the new option {{option.id +1}}" ng-model="option.text" class="ui basic label"/>
+										</div>
+									</div>
+									<button class="ui secondary button" ng-click="sendAddedOptions()">Send</button>
+								</form>
 							<% } %>
 						</div>
 					</div>
@@ -48,5 +86,15 @@
 				</div>
 			<% } %>
 		</div>
+
+		<% if(found) { %>
+			<% include ../snippets/sharedJS %>
+			<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js'></script>
+			<% include ../snippets/pollPage-controller %>
+			<script src="/js/tablesort.js"></script>
+			<script>
+				$('table').tablesort()
+			</script>
+		<% } %>
 	</body>
 </html>

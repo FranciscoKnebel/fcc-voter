@@ -1,0 +1,71 @@
+<script>
+	const pollID = "<%= poll.link %>";
+
+	var app = angular.module('poll', []);
+	app.controller('pollPage-controller', function($scope, $http) {
+		angular.element(document).find(".ui.disabled.positive.button").removeClass("disabled"); //button is disabled until controller loads.
+		$scope.addingOption = false;
+		$scope.options = [];
+
+		$scope.vote = function(optionID) {
+			console.log(optionID);
+
+			$http.post('/poll/vote/' + pollID, $scope.newPoll).then(function(response) {}, function(response) {});
+
+		}
+
+		$scope.addOption = function() {
+			if (!$scope.addingOption) {
+				angular.element(document).find(".ui.positive.button").addClass("disabled"); //button is disabled until new option is added.
+				$scope.addingOption = true;
+			}
+
+			addOption();
+		}
+
+		function addOption() {
+			if (typeof $scope.options === "undefined") {
+				$scope.options = {
+					id: 0,
+					text: ""
+				}
+			} else {
+				$scope.options.push({id: $scope.options.length, text: ""});
+			}
+		}
+
+		$scope.sendAddedOptions = function() {
+			$scope.options = $scope.options.filter(function(option) {
+				return option.text !== "";
+			});
+			renumberOptions();
+
+			if (typeof $scope.options[0] === "undefined") {
+				$scope.message = "You need at least one filled option.";
+				$scope.loading = false;
+				$scope.success = "";
+				$scope.showMessage = true;
+
+				return;
+			} else {
+				$scope.message = "";
+				$scope.loading = true;
+				$scope.success = "";
+				$scope.showMessage = true;
+			}
+
+			$http.post('/poll/add/' + pollID, $scope.options).then(function(response) {}, function(response) {});
+
+		}
+
+		function renumberOptions() {
+			var num = 0;
+			$scope.options = $scope.options.map(function(option) {
+				option.id = num;
+				num++;
+				return option;
+			});
+		}
+
+	});
+</script>
