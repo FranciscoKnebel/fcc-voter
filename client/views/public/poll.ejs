@@ -9,8 +9,14 @@
 
 		<link rel="stylesheet" href="/css/poll.css">
 	</head>
-	<body ng-app="poll" class="nojs">
-		<div class="ui middle aligned center aligned grid" ng-controller="pollPage-controller">
+
+	<% var nojs = "" %>
+	<% if (found) { %>
+		<% var nojs = "nojs" %>
+	<% } %>
+	<body ng-app="poll" class="<%= nojs %>">
+
+		<div class=" ui middle aligned center aligned grid" ng-controller=" pollPage-controller">
 			<% if(found) { %>
 				<div class="row">
 					<div class="column">
