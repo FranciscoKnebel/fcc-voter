@@ -1,0 +1,43 @@
+<% var profilePicture = user.defined.image || user.twitter.image || user.facebook.image || "/img/profile.jpg"; %>
+<% var profileName = user.defined.username || user.twitter.displayName || user.facebook.name || ("User " + user.id); %>
+<% var profileEmail = user.defined.email || user.local.email || user.facebook.email || "undefined"; %>
+
+<div class="ui stacked segments">
+	<div class="ui horizontal segments">
+		<div class="ui segment">
+			<div class="ui attached">
+				<img class="ui small centered image" src="<%= profilePicture %>"/>
+			</div>
+			<div class="ui bottom attached button" tabindex="0">Change Profile Picture</div>
+		</div>
+		<div class="ui segment">
+
+			<h5 class="ui header icon">
+				<i class="settings icon"></i>
+				<div class="content" style="padding: 0;">
+					Account Settings
+					<div class="sub header">Manage your preferences</div>
+				</div>
+			</h5>
+
+			<div class="ui labeled action input">
+				<div class="ui label">Name:
+				</div>
+				<input type="text" name="name" placeholder="<%= profileName %>"/>
+				<div class="ui icon button" ng-click="change">
+					<i class="large checkmark box icon"></i>
+				</div>
+			</div>
+			<div class="ui divider"></div>
+			<div class="ui labeled action input">
+				<div class="ui label">Email:
+				</div>
+				<input type="text" name="name" placeholder="<%= profileEmail %>"/>
+				<div class="ui icon button">
+					<i class="large checkmark box icon"></i>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
