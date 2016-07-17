@@ -5,6 +5,7 @@ const MIN_LENGTH = 5;
 var app = angular.module('poll', []);
 
 app.controller('pollController', function($scope, $http, $location) {
+	angular.element(document).find("body").removeClass("nojs");
 	$scope.message = "";
 	$scope.success = "";
 	$scope.loading = "";

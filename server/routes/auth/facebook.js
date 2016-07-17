@@ -12,10 +12,10 @@ module.exports = function(app, passport) {
 		scope: 'email'
 	}));
 
-	app.get('/connect/facebook/callback', isLoggedIn, passport.authorize('facebook', {
+	/*app.get('/connect/facebook/callback', isLoggedIn, passport.authorize('facebook', {
 		successRedirect: '/profile',
 		failureRedirect: '/'
-	}));
+	}));*/
 
 	app.get('/unlink/facebook', isLoggedIn, function(req, res) {
 		var user = req.user;

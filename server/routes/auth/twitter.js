@@ -10,10 +10,10 @@ module.exports = function(app, passport) {
 		scope: 'email'
 	}));
 
-	app.get('/connect/twitter/callback', isLoggedIn, passport.authorize('twitter', {
+	/*app.get('/connect/twitter/callback', isLoggedIn, passport.authorize('twitter', {
 		successRedirect: '/profile',
 		failureRedirect: '/'
-	}));
+	}));*/
 
 	app.get('/unlink/twitter', isLoggedIn, function(req, res) {
 		var user = req.user;

@@ -6,9 +6,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<% include ../snippets/sharedCSS %>
 		<% include ../snippets/analytics %>
+
 		<link rel="stylesheet" href="/css/poll.css">
 	</head>
-	<body ng-app="poll">
+	<body ng-app="poll" class="nojs">
 		<div class="ui middle aligned center aligned grid" ng-controller="pollPage-controller">
 			<% if(found) { %>
 				<div class="row">
@@ -16,56 +17,100 @@
 						<h1 class="ui header">
 							<i class="list icon"></i>Poll Page
 						</h1>
-						<h5 class="ui header">http://www.votação.com/poll/<%= ID %></h5>
+						<h5 class="ui header" id="copyTarget">http://www.votação.com/poll/<%= ID %></h5>
 					</div>
 				</div>
 				<div class="row">
-					<div class="column">
-						<div class="ui stacked segment">
-							<h1 class="ui header"><%= poll.title %></h1>
-							<table class="ui sortable unstackable table">
-								<thead>
-									<tr>
-										<th class="no-sort">Option</th>
-										<th class="sorted descending">Votes</th>
-										<th class="no-sort"></th>
-									</tr>
-								</thead>
-								<tbody id="optionsTable">
-									<% var options = poll.options %>
-									<% for(i = 0; i < options.length; i++) { %>
+					<div class="column ui rail">
+						<div class="ui sticky">
+							<div class="ui top attached buttons">
+								<a href="http://www.facebook.com/sharer.php?u=http://www.votação.com/poll/<%= ID %>" class="ui vertical animated black button icon" target="_blank" style="border-top-left-radius: 0 !important;">
+									<div class="visible content">
+										<i class="large facebook icon"></i>
+									</div>
+									<div class="hidden content">
+										Facebook
+									</div>
+								</a>
+								<span class="ui black button icon" data-tooltip="Add poll link to your clipboard" data-position="bottom center">
+									<i class="large share alternate icon" id="copyButton"></i>
+								</span>
+								<a href='http://twitter.com/share?text="<%= poll.title %>": Vote at&url=http://www.votação.com/poll/<%= ID %>' class="ui vertical animated black button icon" target="_blank" style="border-top-right-radius: 0 !important;">
+									<div class="visible content">
+										<i class="large twitter icon"></i>
+									</div>
+									<div class="hidden content">
+										Twitter
+									</div>
+								</a>
+							</div>
+						</div>
+						<div id="context">
+							<div class="ui stacked attached segment">
+								<h1 class="ui header"><%= poll.title %></h1>
+
+								<table class="ui sortable unstackable table">
+									<thead>
 										<tr>
-											<td>
-												<%= options[i].text %>
-											</td>
-											<td>
-												<%= options[i].votes %>
-											</td>
-											<td class="collapsing">
-												<button class="ui disabled positive icon button" title="Vote for Option" ng-click="vote('<%= options[i].id %>')">
-													<i class="check icon"></i>
-												</button>
-											</td>
+											<th class="no-sort">Option</th>
+											<th class="sorted descending">Votes</th>
+											<th class="no-sort"></th>
 										</tr>
-									<% } %>
-								</tbody>
-							</table>
+									</thead>
+									<tbody id="optionsTable">
+										<% var options = poll.options %>
+										<% for(i = 0; i < options.length; i++) { %>
+											<tr>
+												<td>
+													<%= options[i].text %>
+												</td>
+												<td>
+													<%= options[i].votes %>
+												</td>
+												<td class="collapsing">
+													<button class="ui disabled positive icon button" title="Vote for Option" ng-click="vote('<%= options[i].id %>')">
+														<i class="check icon"></i>
+													</button>
+												</td>
+											</tr>
+										<% } %>
+									</tbody>
+								</table>
 
-							<% if(authenticated) { %>
-								<button class="ui secondary button" title="Add Poll Option" ng-click="addOption()">
-									<i class="plus icon"></i>Add Option</button>
-								<div class="ui divider"></div>
-
-								<form class="ui large form" ng-show="addingOption">
-									<div class="field" ng-repeat="option in options">
-										<div class="ui left icon input">
-											<i class="question icon"></i>
-											<input name="addedOption" type="text" placeholder="Input the new option {{option.id +1}}" ng-model="option.text" class="ui basic label"/>
+								<span>
+									<div class="ui icon message" ng-show="loading">
+										<i class="notched circle loading icon"></i>
+										<div class="content">
+											<div class="header">
+												Just one second
+											</div>
+											<p>{{loadingMessage}}</p>
 										</div>
 									</div>
-									<button class="ui secondary button" ng-click="sendAddedOptions()">Send</button>
-								</form>
-							<% } %>
+									<div class="ui error message" ng-show="message">
+										{{message}}
+									</div>
+									<div class="ui success message" ng-show="success">
+										{{success}}
+									</div>
+								</span>
+								<div class="ui divider"></div>
+								<% if(authenticated) { %>
+									<button class="ui secondary button" title="Add Poll Option" ng-click="addOption()">
+										<i class="plus icon"></i>Add Option</button>
+									<div class="ui divider"></div>
+
+									<form class="ui large form" ng-show="addingOption">
+										<div class="field" ng-repeat="option in options">
+											<div class="ui left icon input">
+												<i class="question icon"></i>
+												<input name="addedOption" type="text" placeholder="Input the new option {{option.id +1}}" ng-model="option.text" class="ui basic label"/>
+											</div>
+										</div>
+										<button id="sendButton" class="ui secondary button" ng-click="sendAddedOptions()">Send</button>
+									</form>
+								<% } %>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -94,8 +139,66 @@
 			<% include ../snippets/pollPage-controller %>
 			<script src="/js/tablesort.js"></script>
 			<script>
-				$('table').tablesort()
+				$('table').tablesort();
+				$('.ui.sticky').sticky({context: '#context', pushing: true, observeChanges: true});
+
+				document.getElementById("copyButton").addEventListener("click", function() {
+					copyToClipboard(document.getElementById("copyTarget"));
+				});
+
+				function copyToClipboard(elem) {
+					// create hidden text element, if it doesn't already exist
+					var targetId = "_hiddenCopyText_";
+					var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+					var origSelectionStart,
+						origSelectionEnd;
+					if (isInput) {
+						// can just use the original source element for the selection and copy
+						target = elem;
+						origSelectionStart = elem.selectionStart;
+						origSelectionEnd = elem.selectionEnd;
+					} else {
+						// must use a temporary form element for the selection and copy
+						target = document.getElementById(targetId);
+						if (!target) {
+							var target = document.createElement("textarea");
+							target.style.position = "absolute";
+							target.style.left = "-9999px";
+							target.style.top = "0";
+							target.id = targetId;
+							document.body.appendChild(target);
+						}
+						target.textContent = elem.textContent;
+					}
+					// select the content
+					var currentFocus = document.activeElement;
+					target.focus();
+					target.setSelectionRange(0, target.value.length);
+
+					// copy the selection
+					var succeed;
+					try {
+						succeed = document.execCommand("copy");
+					} catch (e) {
+						succeed = false;
+					}
+					// restore original focus
+					if (currentFocus && typeof currentFocus.focus === "function") {
+						currentFocus.focus();
+					}
+
+					if (isInput) {
+						// restore prior selection
+						elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+					} else {
+						// clear temporary content
+						target.textContent = "";
+					}
+					return succeed;
+				}
 			</script>
 		<% } %>
 	</body>
+</html>
+
 </html>

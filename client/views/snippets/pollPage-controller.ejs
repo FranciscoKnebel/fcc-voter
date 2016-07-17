@@ -2,7 +2,9 @@
 	const pollID = "<%= poll.link %>";
 
 	var app = angular.module('poll', []);
+
 	app.controller('pollPage-controller', function($scope, $http) {
+		angular.element(document).find("body").removeClass("nojs");
 		angular.element(document).find(".ui.disabled.positive.button").removeClass("disabled"); //button is disabled until controller loads.
 		$scope.addingOption = false;
 		$scope.options = [];
@@ -16,7 +18,6 @@
 
 		$scope.addOption = function() {
 			if (!$scope.addingOption) {
-				angular.element(document).find(".ui.positive.button").addClass("disabled"); //button is disabled until new option is added.
 				$scope.addingOption = true;
 			}
 
@@ -35,6 +36,8 @@
 		}
 
 		$scope.sendAddedOptions = function() {
+			angular.element(document).find(".ui.secondary.button").addClass("disabled"); //button is disabled until new option is added.
+
 			$scope.options = $scope.options.filter(function(option) {
 				return option.text !== "";
 			});
@@ -44,17 +47,29 @@
 				$scope.message = "You need at least one filled option.";
 				$scope.loading = false;
 				$scope.success = "";
-				$scope.showMessage = true;
-
+				angular.element(document).find(".ui.secondary.button").removeClass("disabled"); //button is disabled until new option is added.
+				addOption();
 				return;
 			} else {
 				$scope.message = "";
 				$scope.loading = true;
+				$scope.loadingMessage = "We're sending your new options";
 				$scope.success = "";
-				$scope.showMessage = true;
+				angular.element(document).find("#sendButton").removeClass("disabled").addClass("loading");
 			}
 
-			$http.post('/poll/add/' + pollID, $scope.options).then(function(response) {}, function(response) {});
+			$http.post('/poll/add/' + pollID, $scope.options).then(function(response) {
+				$scope.message = ""
+				$scope.loading = false;
+				$scope.success = response.data;
+				angular.element(document).find("#sendButton").addClass("disabled"); //button is disabled until new option is added.
+				window.location.replace("/poll/" + pollID);
+			}, function(response) {
+				$scope.message = "Sending added options failed. Please try again later."
+				$scope.loading = false;
+				$scope.success = "";
+				angular.element(document).find(".ui.secondary.button").removeClass("disabled"); //button is disabled until new option is added.
+			});
 
 		}
 

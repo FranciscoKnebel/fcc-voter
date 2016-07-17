@@ -24,6 +24,14 @@
 						<div class="ui stacked segment">
 							<% if(poll.totalVotes > 0) { %>
 								<canvas id="myChart" height="300" width="300"></canvas>
+								<div class="ui statistic">
+									<div class="value">
+										<%= poll.totalVotes %>
+									</div>
+									<div class="label">
+										Votes
+									</div>
+								</div>
 							<% } else { %>
 								<p>Poll "<%= poll.title %>" has no votes yet.</p>
 								<p>

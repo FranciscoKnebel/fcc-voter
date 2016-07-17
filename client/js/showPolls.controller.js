@@ -1,6 +1,7 @@
 var app = angular.module('poll', []);
 
 app.controller('showPolls', function($scope, $http) {
+	angular.element(document).find("body").removeClass("nojs");
 	$scope.firstLoad = true;
 	$scope.message = "";
 	$scope.loading = false;

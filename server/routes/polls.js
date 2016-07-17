@@ -43,7 +43,7 @@ module.exports = function(app) {
 	});
 
 	app.post('/poll/vote/:ID', function(req, res) {
-		res.send(req.params.ID);
+		res.send(req.params.ID + req.body);
 	});
 
 	app.post('/poll/add/:ID', isLoggedIn, function(req, res) {
@@ -55,7 +55,7 @@ module.exports = function(app) {
 				text: passedOptions[i].text
 			});
 		}
-		console.log("Finding poll to push options.");
+		console.log("Finding poll " + req.params.ID + " to push options.");
 
 		Poll.findOneAndUpdate({
 				'link': req.params.ID
@@ -72,6 +72,7 @@ module.exports = function(app) {
 			function(err, poll) {
 				if (err)
 					throw err;
+				console.log("Added options to poll " + poll.link);
 				res.send("Added options to poll " + poll.link);
 			});
 	});
@@ -201,7 +202,6 @@ function savePollToUser(req, poll) {
 
 			console.log("Saved poll to user " + usr.id);
 			req.user.ownedPolls = usr.ownedPolls;
-			req.session.passport.user.ownedPolls = usr.ownedPolls;
 		});
 }
 

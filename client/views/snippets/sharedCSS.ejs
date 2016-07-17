@@ -2,6 +2,11 @@
 <!-- load semantic-ui -->
 <style>
 	body {
-		padding-top: 80px;
+		padding-top: 40px;
 	}
+	body.nojs {
+		display: none !important;
+	}
+	/* Added in angular pages, so the user doesn't see the layout before it is loaded, along with angular.element(document).find("body").removeClass("nojs"); */
+
 </style>
