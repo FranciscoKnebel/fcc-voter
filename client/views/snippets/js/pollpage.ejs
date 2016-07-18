@@ -1,0 +1,8 @@
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js'></script>
+<% include pollPage-controller %>
+<script src="/js/tablesort.js"></script>
+<script>
+	$('table').tablesort();
+	$('.ui.sticky').sticky({context: '#context', pushing: true, observeChanges: true});
+</script>
+<% include copylink %>

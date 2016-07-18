@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Votação.com</title>
+		<title>fcc-voter.herokuapp.com</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<% include ../snippets/sharedCSS %>
+		<% include ../snippets/css/sharedCSS %>
 		<% include ../snippets/analytics %>
 
 		<link rel="stylesheet" href="/css/poll.css">
@@ -23,14 +23,14 @@
 						<h1 class="ui header">
 							<i class="list icon"></i>Poll Page
 						</h1>
-						<h5 class="ui header" id="copyTarget">http://www.votação.com/poll/<%= ID %></h5>
+						<h5 class="ui header" id="copyTarget">http://fcc-voter.herokuapp.com/poll/<%= ID %></h5>
 					</div>
 				</div>
 				<div class="row">
 					<div class="column ui rail">
 						<div class="ui sticky">
 							<div class="ui top attached buttons">
-								<a href="http://www.facebook.com/sharer.php?u=http://www.votação.com/poll/<%= ID %>" class="ui vertical animated black button icon" target="_blank" style="border-top-left-radius: 0 !important;">
+								<a href="http://www.facebook.com/sharer.php?u=http://fcc-voter.herokuapp.com/poll/<%= ID %>" class="ui vertical animated black button icon" target="_blank" style="border-top-left-radius: 0 !important;">
 									<div class="visible content">
 										<i class="large facebook icon"></i>
 									</div>
@@ -41,7 +41,7 @@
 								<span id="copyButton" class="ui black button icon" data-tooltip="Add poll link to your clipboard" data-position="bottom center">
 									<i class="large share alternate icon"></i>
 								</span>
-								<a href='http://twitter.com/share?text="<%= poll.title %>": Vote at&url=http://www.votação.com/poll/<%= ID %>' class="ui vertical animated black button icon" target="_blank" style="border-top-right-radius: 0 !important;">
+								<a href='http://twitter.com/share?text="<%= poll.title %>": Vote at&url=http://fcc-voter.herokuapp.com/poll/<%= ID %>' class="ui vertical animated black button icon" target="_blank" style="border-top-right-radius: 0 !important;">
 									<div class="visible content">
 										<i class="large twitter icon"></i>
 									</div>
@@ -126,7 +126,7 @@
 						<h1 class="ui header">
 							<i class="list icon"></i>Poll Page
 						</h1>
-						<h5 class="ui header">http://www.votação.com/poll/<%= ID %></h5>
+						<h5 class="ui header">http://fcc-voter.herokuapp.com/poll/<%= ID %></h5>
 					</div>
 				</div>
 				<div class="row">
@@ -140,69 +140,8 @@
 		</div>
 
 		<% if(found) { %>
-			<% include ../snippets/sharedJS %>
-			<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js'></script>
-			<% include ../snippets/pollPage-controller %>
-			<script src="/js/tablesort.js"></script>
-			<script>
-				$('table').tablesort();
-				$('.ui.sticky').sticky({context: '#context', pushing: true, observeChanges: true});
-
-				document.getElementById("copyButton").addEventListener("click", function() {
-					copyToClipboard(document.getElementById("copyTarget"));
-				});
-
-				function copyToClipboard(elem) {
-					// create hidden text element, if it doesn't already exist
-					var targetId = "_hiddenCopyText_";
-					var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
-					var origSelectionStart,
-						origSelectionEnd;
-					if (isInput) {
-						// can just use the original source element for the selection and copy
-						target = elem;
-						origSelectionStart = elem.selectionStart;
-						origSelectionEnd = elem.selectionEnd;
-					} else {
-						// must use a temporary form element for the selection and copy
-						target = document.getElementById(targetId);
-						if (!target) {
-							var target = document.createElement("textarea");
-							target.style.position = "absolute";
-							target.style.left = "-9999px";
-							target.style.top = "0";
-							target.id = targetId;
-							document.body.appendChild(target);
-						}
-						target.textContent = elem.textContent;
-					}
-					// select the content
-					var currentFocus = document.activeElement;
-					target.focus();
-					target.setSelectionRange(0, target.value.length);
-
-					// copy the selection
-					var succeed;
-					try {
-						succeed = document.execCommand("copy");
-					} catch (e) {
-						succeed = false;
-					}
-					// restore original focus
-					if (currentFocus && typeof currentFocus.focus === "function") {
-						currentFocus.focus();
-					}
-
-					if (isInput) {
-						// restore prior selection
-						elem.setSelectionRange(origSelectionStart, origSelectionEnd);
-					} else {
-						// clear temporary content
-						target.textContent = "";
-					}
-					return succeed;
-				}
-			</script>
+			<% include ../snippets/js/sharedJS %>
+			<% include ../snippets/js/pollpage %>
 		<% } %>
 	</body>
 </html>

@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Votação.com</title>
+		<title>fcc-voter.herokuapp.com</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<% include ../snippets/sharedCSS %>
+		<% include ../snippets/css/sharedCSS %>
 		<% include ../snippets/analytics %>
 		<link rel="stylesheet" href="/css/poll.css">
 	</head>
@@ -15,14 +15,33 @@
 					<h1 class="ui header">
 						<i class="pie chart icon"></i>Poll Results
 					</h1>
-					<h5 class="ui header">http://www.votação.com/poll/results/<%= ID %></h5>
+					<h5 class="ui header">http://fcc-voter.herokuapp.com/poll/results/<%= ID %></h5>
 				</div>
 			</div>
+
 			<% if(found) { %>
 				<div class="row">
 					<div class="column">
-						<div class="ui stacked segment">
-							<% if(poll.totalVotes > 0) { %>
+
+						<% if(poll.totalVotes > 0) { %>
+							<div class="ui top attached menu">
+								<div class="active item" data-tab="first">Pie</div>
+								<div class="item" data-tab="second">Bar</div>
+								<div class="right menu">
+									<a href="/poll/<%= ID %>" class="ui item">
+										<i class="large check icon"></i>
+										<p>Vote</p>
+									</a>
+									<a href="http://www.facebook.com/sharer.php?u=http://fcc-voter.herokuapp.com/poll/<%= ID %>" class="ui icon item" target="_blank">
+										<i class="large facebook icon"></i>
+									</a>
+									<a href='http://twitter.com/share?text="<%= poll.title %>": Vote at&url=http://fcc-voter.herokuapp.com/poll/<%= ID %>' class="ui icon item" target="_blank">
+										<i class="large twitter icon"></i>
+									</a>
+								</div>
+							</div>
+
+							<div class="ui bottom attached active tab stacked segment" data-tab="first">
 								<canvas id="myChart" height="300" width="300"></canvas>
 								<div class="ui statistic">
 									<div class="value">
@@ -32,15 +51,31 @@
 										Votes
 									</div>
 								</div>
-							<% } else { %>
+							</div>
+
+							<div class="ui bottom attached tab stacked segment" data-tab="second">
+								<canvas id="myAltChart" height="300" width="300"></canvas>
+								<div class="ui statistic">
+									<div class="value">
+										<%= poll.totalVotes %>
+									</div>
+									<div class="label">
+										Votes
+									</div>
+								</div>
+							</div>
+
+						<% } else { %>
+							<div class="ui stacked segment">
 								<p>Poll "<%= poll.title %>" has no votes yet.</p>
 								<p>
 									Vote at
 									<a href="/poll/<%= ID %>">/poll/<%= ID %></a>
 								</p>
 								ADD ILLUSTRATIVE IMAGE HERE 1
-							<% } %>
-						</div>
+							</div>
+						<% } %>
+
 					</div>
 				</div>
 			<% } else { %>
@@ -60,8 +95,13 @@
 		</div>
 
 		<% if(found) { %>
-			<% include ../snippets/sharedJS %>
-			<% include ../snippets/chart %>
+			<% include ../snippets/js/sharedJS %>
+			<% if(poll.totalVotes > 0) { %>
+				<% include ../snippets/js/chart %>
+				<script>
+					$('.menu .item').tab();
+				</script>
+			<% } %>
 		<% } %>
 	</body>
 </html>

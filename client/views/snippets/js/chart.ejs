@@ -5,19 +5,19 @@
 		return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
 	};
 	var ctx = document.getElementById("myChart");
+	var ct2 = document.getElementById("myAltChart");
+
 	var chartData = {
 		labels: [
-			<% for(i = 0; i < poll.options.length -1; i++) { %>
+			<% for(i = 0; i < poll.options.length; i++) { %>
 			"<%= poll.options[i].text %>", <% } %>
-			"<%= poll.options[poll.options.length-1].text %>"
 		],
 		datasets: [
 			{
 				label: "Amount of votes",
 				data: [
-					<% for(i = 0; i < poll.options.length -1; i++) { %>
+					<% for(i = 0; i < poll.options.length; i++) { %>
 					<%= poll.options[i].votes %>, <% } %>
-					1
 				],
 				backgroundColor: [<% for(i = 0; i < poll.options.length -1; i++) { %>
 					randomColorGenerator(), <% } %>
@@ -30,7 +30,7 @@
 		responsive: true,
 		title: {
 			display: true,
-			text: "<%= poll.title %> - [<%= poll.totalVotes %>]"
+			text: "<%= poll.title %>"
 		},
 		scales: {
 			yAxes: [
@@ -43,12 +43,11 @@
 			]
 		}
 	}
-
 	var pieOptions = {
 		responsive: true,
 		title: {
 			display: true,
-			text: "<%= poll.title %> - [<%= poll.totalVotes %>]"
+			text: "<%= poll.title %>"
 		}
 	}
 
@@ -56,5 +55,11 @@
 		type: 'pie',
 		data: chartData,
 		options: pieOptions
+	});
+
+	var myAltChart = new Chart(ct2, {
+		type: 'bar',
+		data: chartData,
+		options: barOptions
 	});
 </script>

@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Votação.com</title>
+		<title>fcc-voter.herokuapp.com</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<% include ../snippets/sharedCSS %>
+		<% include ../snippets/css/sharedCSS %>
 		<% include ../snippets/analytics %>
 
 		<link rel="stylesheet" href="/css/loggedIn.css">
@@ -39,30 +39,28 @@
 							Configuration
 						</div>
 						<div class="content" style="padding: 0;">
-							<% include ../snippets/userProfile %>
+							<% include ../snippets/html/userProfile %>
 						</div>
 						<div class="title">
 							<i class="dropdown icon"></i>
 							Connect Accounts
 						</div>
 						<div class="content" style="padding: 0;">
-							<% include ../snippets/connectAccounts %>
+							<% include ../snippets/html/connectAccounts %>
 						</div>
 						<div class="title" ng-click="getPolls()">
 							<i class="dropdown icon"></i>
 							Owned Polls
 						</div>
 						<div class="content">
-							<% include ../snippets/showPolls %>
+							<% include ../snippets/html/showPolls %>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<% include ../snippets/sharedJS %>
-		<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js'></script>
-		<script src='/js/showPolls.controller.js'></script>
-		<script src="/js/profile.js"></script>
+		<% include ../snippets/js/sharedJS %>
+		<% include ../snippets/js/profile %>
 	</body>
 </html>

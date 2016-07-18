@@ -3,7 +3,13 @@ body {
 }
 
 .column {
-  max-width: 50%
+  max-width: 40%
+}
+
+@media screen and (max-width: 900px) {
+    .column {
+      max-width: 50%
+    }
 }
 
 @media screen and (max-width: 768px) {

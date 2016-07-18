@@ -1,6 +1,6 @@
 <!-- check if user exists. If yes, send userID along with analytics. -->
 <% if(typeof user !== "undefined") { %>
-	<% include analyticsUser %>
+	<% include js/analyticsUser %>
 <% } else { %>
-	<% include analyticsNotUser %>
+	<% include js/analyticsNotUser %>
 <% } %>
