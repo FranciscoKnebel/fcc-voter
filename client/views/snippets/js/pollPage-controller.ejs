@@ -7,12 +7,35 @@
 		angular.element(document).find("body").removeClass("nojs");
 		angular.element(document).find(".ui.disabled.positive.button").removeClass("disabled"); //button is disabled until controller loads.
 		$scope.addingOption = false;
+		$scope.message = ""
+		$scope.loading = false;
+		$scope.success = "";
+
 		$scope.options = [];
 
 		$scope.vote = function(optionID) {
-			console.log(optionID);
+			$scope.message = "";
+			$scope.success = "";
+			$scope.loading = true;
+			$scope.loadingMessage = "Sending your vote option...";
+			angular.element(document).find(".ui.positive.button").addClass("disabled"); //button is disabled until new option is added.
 
-			$http.post('/poll/vote/' + pollID, $scope.newPoll).then(function(response) {}, function(response) {});
+			var object = {
+				poll: pollID,
+				option: optionID
+			};
+
+			$http.post('/poll/vote/' + pollID, object).then(function(response) {
+				$scope.success = "Vote sent! Going to results page...";
+				$scope.loading = false;
+				$scope.message = "";
+				window.location.replace("/poll/results/" + pollID);
+			}, function(response) {
+				$scope.success = "";
+				$scope.loading = false;
+				$scope.message = response.data || "Sending vote failed. Please try again later.";
+				angular.element(document).find(".ui.positive.button").removeClass("disabled"); //button is disabled until new option is added.
+			});
 
 		}
 

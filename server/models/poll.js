@@ -1,16 +1,16 @@
-var mongoose = require('mongoose');
-var shortid = require('shortid');
+var mongoose = require( 'mongoose' );
+var shortid = require( 'shortid' );
 
-var pollSchema = mongoose.Schema({
+var pollSchema = mongoose.Schema( {
 	title: String,
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
 	},
-	options: [{
+	options: [ {
 		text: String,
 		votes: Number
-	}],
+	} ],
 	totalVotes: Number,
 	link: {
 		type: String,
@@ -21,34 +21,39 @@ var pollSchema = mongoose.Schema({
 		createdAt: 'createdAt',
 		updatedAt: 'updatedAt'
 	}
-});
+} );
 
-pollSchema.methods.voteFor = function(option) {
-	var selectedIndex = findOptionIndex(this.options, '_id', option.id);
+pollSchema.methods.voteFor = function ( optionID ) {
+	var selectedIndex = findOptionIndex( this.options, '_id', optionID );
 
-	if (!selectedIndex) {
-		this.options[selectedIndex].votes++;
-		this.markModified('options');
+	if ( selectedIndex !== null ) {
+		this.options[ selectedIndex ].votes++;
+		this.markModified( 'options' );
 
 		this.totalVotes++;
-		this.markModified('totalVotes');
+		this.markModified( 'totalVotes' );
 
-		this.save(function(err) {
-			if (err)
+		this.save( function ( err ) {
+			if ( err )
 				throw err;
-		});
+
+			return this.totalVotes;
+		} );
+	} else {
+		console.log( "Selected option not found." );
+		return null;
 	}
 }
 
-pollSchema.methods.getOptions = function() {
+pollSchema.methods.getOptions = function () {
 	return this.options;
 }
 
-module.exports = mongoose.model('Poll', pollSchema);
+module.exports = mongoose.model( 'Poll', pollSchema );
 
-function findOptionIndex(array, key, value) {
-	for (var i = 0; i < array.length; i++) {
-		if (array[i][key] === value) {
+function findOptionIndex( array, key, value ) {
+	for ( var i = 0; i < array.length; i++ ) {
+		if ( array[ i ][ key ] == value ) {
 			return i;
 		}
 	}
