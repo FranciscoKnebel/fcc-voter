@@ -1,4 +1,4 @@
-# fcc-VotingApp
+# fcc-Voter
 
 #### User Stories
 
@@ -21,7 +21,14 @@
 </ul>
 
 ##### Demo
-Demo project hosted at Heroku. [Click here to redirect to it.]()
+Demo project hosted at Heroku. [Click here to redirect to it.](http://fcc-voter.herokuapp.com/)
+To implement your own solution, your .env file needs to contain the following items:
+
+FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET, FACEBOOK_CALLBACK,
+
+TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_CALLBACK
+
+MLAB_URL, SESSION_SECRET, PORT.
 
 ##### LICENSE
 MIT License. [Click here for more information.](LICENSE.md)
