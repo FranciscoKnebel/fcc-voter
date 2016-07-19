@@ -3,19 +3,14 @@ module.exports = function ( app, passport ) {
 		scope: 'email'
 	} ) );
 
-	app.get( '/auth/facebook/callback', isLoggedOut, passport.authenticate( 'facebook', {
+	app.get( '/auth/facebook/callback', passport.authenticate( 'facebook', {
 		successRedirect: '/profile',
 		failureRedirect: '/'
 	} ) );
 
-	app.get( '/connect/facebook', passport.authorize( 'facebook', {
+	app.get( '/connect/facebook', isLoggedIn, passport.authorize( 'facebook', {
 		scope: 'email'
 	} ) );
-
-	/*app.get('/connect/facebook/callback', isLoggedIn, passport.authorize('facebook', {
-		successRedirect: '/profile',
-		failureRedirect: '/'
-	}));*/
 
 	app.get( '/unlink/facebook', isLoggedIn, function ( req, res ) {
 		var user = req.user;
