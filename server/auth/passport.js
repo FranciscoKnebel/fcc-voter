@@ -120,8 +120,15 @@ module.exports = function(passport) {
 						newUser.facebook.id = profile.id;
 						newUser.facebook.token = token; // we will save the token that facebook provides to the user
 						newUser.facebook.name = profile.displayName;
-						newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-						newUser.facebook.image = profile.photos[0].value;
+                        if(typeof profile.emails == "undefined")
+                            newUser.facebook.email = "undefined";
+                        else
+                            newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+                        
+                        if(typeof profile.photos == "undefined")
+                            newUser.facebook.image = "undefined";
+                        else
+                            newUser.facebook.image = profile.photos[0].value;
 
 						newUser.save(function(err) {
 							if (err)
@@ -139,10 +146,18 @@ module.exports = function(passport) {
 				user.facebook.id = profile.id;
 				user.facebook.token = token;
 				user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-				user.facebook.email = profile.emails[0].value;
-				user.facebook.image = profile.photos[0].value;
+		                if(typeof profile.emails == "undefined")
+		                    user.facebook.email = "undefined";
+		                else
+		                    user.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+		                
+		                if(typeof profile.photos == "undefined")
+		                    user.facebook.image = "undefined";
+		                else
+		                    user.facebook.image = profile.photos[0].value;
 
-				// save the user
+                    
+                // save the user
 				user.save(function(err) {
 					if (err)
 						throw err;
